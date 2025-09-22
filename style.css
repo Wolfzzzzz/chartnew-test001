@@ -950,3 +950,108 @@ iframe {
         justify-content: center;
     }
 }
+/* 底部声明区域样式 */
+.footer-section {
+    background: linear-gradient(90deg, rgba(3, 105, 161, 0.05), rgba(99, 102, 241, 0.05));
+    border-top: 1px solid var(--color-neutral-200);
+    margin-top: var(--size-2xl);
+    padding: var(--size-lg);
+    border-radius: var(--border-radius-lg);
+}
+
+.footer-content {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    text-align: center;
+    color: var(--color-neutral-600);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.footer-contacts {
+    display: flex;
+    justify-content: center;
+    gap: var(--size-xl);
+    margin-bottom: var(--size-md);
+    flex-wrap: wrap;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: var(--size-sm);
+    padding: var(--size-sm) var(--size-md);
+    background: var(--color-neutral-50);
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--color-neutral-200);
+    transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+    background: var(--color-neutral-100);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.contact-icon {
+    color: var(--color-primary-500);
+    font-size: 16px;
+}
+
+.contact-email {
+    color: var(--color-primary-600);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.contact-email:hover {
+    color: var(--color-accent-indigo);
+    text-decoration: underline;
+}
+
+.footer-disclaimer {
+    color: var(--color-neutral-500);
+    font-size: 13px;
+    border-top: 1px solid var(--color-neutral-200);
+    padding-top: var(--size-md);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* 深色主题适配 */
+[data-theme="dark"] .footer-section {
+    background: linear-gradient(90deg, rgba(3, 105, 161, 0.1), rgba(99, 102, 241, 0.1));
+}
+
+[data-theme="dark"] .contact-item {
+    background: var(--color-neutral-800);
+    border-color: var(--color-neutral-700);
+}
+
+[data-theme="dark"] .contact-item:hover {
+    background: var(--color-neutral-700);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .footer-section {
+        padding: var(--size-md);
+        margin-top: var(--size-xl);
+    }
+    
+    .footer-contacts {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--size-md);
+    }
+    
+    .contact-item {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+    
+    .footer-disclaimer {
+        font-size: 12px;
+    }
+}
