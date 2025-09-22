@@ -1205,3 +1205,34 @@ function init() {
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', init);
+
+
+// 底部联系信息交互效果
+const setupFooterInteractions = () => {
+    const contactItems = document.querySelectorAll('.contact-item');
+    
+    contactItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            // 防止点击邮箱链接时触发动画
+            if (e.target.tagName === 'A') return;
+            
+            item.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                item.style.transform = '';
+            }, 150);
+        });
+    });
+};
+
+// 在初始化函数中调用
+function init() {
+    renderAirportList(); 
+    setupEventListeners(); 
+    showPDFEmptyState("请从左侧选择机场查看航图");
+    
+    // 添加新功能初始化
+    setupThemeToggle();      // 主题切换
+    setupMobileSidebar();    // 移动端侧边栏优化
+    setupModalLoading();     // 模态框加载状态
+    setupFooterInteractions(); // 底部交互效果
+}
