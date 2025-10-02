@@ -142,7 +142,7 @@ const airports = {
     ]
 };
 
-// 航图文件数据
+// 航图文件数据（完整版）
 const chartFiles = {
     // A组-美国（5个核心机场）
     "KLAX": [
@@ -217,25 +217,601 @@ const chartFiles = {
         { name: "标准仪表进场", size: "2.0MB", filename: "arrival.pdf" },
         { name: "滑行道指示图", size: "1.3MB", filename: "taxiway.pdf" }
     ],
-    
-    // 其他机场航图数据...
-    // 为了简洁，这里只保留部分数据，实际使用时请将您原有的完整航图数据复制到这里
+
+    // C组-澳新（4个核心机场）
+    "YSSY": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "YMML": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "NZAA": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "NZWN": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // D组-印/港/台（4个核心机场）
+    "VIDP": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "VABB": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "VHHH": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "RCTP": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // E组-中东（3个核心机场）
+    "OMDB": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "OTBD": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "OEDF": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // F组-中国内地（4个核心机场）
     "ZSPD": [
-        { name: "进近程序图", size: "2.5MB", filename: "approach.pdf" },
-        { name: "离场程序图", size: "1.9MB", filename: "departure.pdf" },
-        { name: "机场平面图", size: "3.2MB", filename: "airport.pdf" },
-        { name: "标准仪表进场", size: "2.2MB", filename: "arrival.pdf" },
-        { name: "滑行道指示图", size: "1.6MB", filename: "taxiway.pdf" }
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "ZGSZ": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
     ],
     "ZBAA": [
-        { name: "进近程序图", size: "2.4MB", filename: "approach.pdf" },
-        { name: "离场程序图", size: "1.8MB", filename: "departure.pdf" },
-        { name: "机场平面图", size: "3.1MB", filename: "airport.pdf" },
-        { name: "标准仪表进场", size: "2.2MB", filename: "arrival.pdf" },
-        { name: "滑行道指示图", size: "1.5MB", filename: "taxiway.pdf" }
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "ZPPP": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // G组-日韩（4个核心机场）
+    "RJAA": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "RJTT": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "RJBB": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "RKSI": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // H组-东南亚（4个核心机场）
+    "WSSS": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "WMKK": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "VTBS": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "VTSB": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // I组-巴西（4个核心机场）
+    "SBGR": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "SBGL": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "SBRJ": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "SBCF": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // J组-南美（4个核心机场）
+    "SAEZ": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "SABE": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "SCEL": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "SEQM": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // K组-墨西哥（3个核心机场）
+    "MMMX": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "MMUN": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "MMGL": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // L组-多米尼加/牙买加（3个核心机场）
+    "MDSD": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "MDPC": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "MKJP": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // M组-加勒比小岛（3个核心机场）
+    "TNCM": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "TBPB": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "TFFR": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // N组-美国偏远地区（3个核心机场）
+    "PHNL": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "PGUM": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "PANC": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // O组-北欧（3个核心机场）
+    "BIKF": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "BGSF": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "BGKK": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // P组-北欧（3个核心机场）
+    "ENGM": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "ENBR": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "EFHK": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // Q组-俄罗斯（3个核心机场）
+    "ULLI": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "UUEE": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "UUDD": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // R组-意大利（3个核心机场）
+    "LIRF": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "LIMC": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "LIBD": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // S组-瑞士/奥地利（3个核心机场）
+    "LSZH": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "LSGG": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "LOWW": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // T组-土耳其/塞浦路斯（3个核心机场）
+    "LTBA": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "LTAI": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "LCLK": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // U组-非洲（3个核心机场）
+    "HECA": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "HLLT": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "HAAA": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // V组-印度（3个核心机场）
+    "VECC": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "VOCB": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "VOBL": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // W组-东南亚（3个核心机场）
+    "WMAP": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "WIPP": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "WIDD": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // X组-中国（3个核心机场）
+    "ZLXY": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "ZYTX": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "ZYTL": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // Y组-韩国（2个核心机场）
+    "RKSS": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "RKPC": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+
+    // Z组-中国（3个核心机场）
+    "ZSPD": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "ZGSZ": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+    ],
+    "ZBAA": [
+        { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+        { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+        { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+        { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+        { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
     ]
 };
-
 // DOM元素
 const sidebar = document.querySelector('.sidebar');
 const sidebarToggle = document.getElementById('sidebarToggle');
