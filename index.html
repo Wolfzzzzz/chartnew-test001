@@ -49,9 +49,9 @@
                     <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
                         <i class="fas fa-moon"></i>
                     </button>
-                    <div class="mobile-toggle" id="mobileToggle" aria-label="打开侧边栏">
+                    <button class="mobile-toggle" id="mobileToggle" aria-label="打开侧边栏">
                         <i class="fas fa-bars"></i>
-                    </div>
+                    </button>
                 </div>
             </div>
             
@@ -74,6 +74,26 @@
                     <!-- PDF 文件卡片将通过JS动态生成 -->
                 </div>
             </section>
+            
+            <!-- 底部声明区域 -->
+            <footer class="footer-section">
+                <div class="footer-content">
+                    <div class="footer-contacts">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope contact-icon"></i>
+                            <span>Support: <a href="mailto:support@skychartpro.top" class="contact-email">support@skychartpro.top</a></span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-headset contact-icon"></i>
+                            <span>Contact: <a href="mailto:contact@skychartpro.top" class="contact-email">contact@skychartpro.top</a></span>
+                        </div>
+                    </div>
+                    <div class="footer-disclaimer">
+                        <i class="fas fa-info-circle"></i>
+                        本站航图内容均来源于Jeppesen航图，仅供参考和学习使用。SkyChart Pro不拥有这些航图的版权，所有权利归Jeppesen所有。
+                    </div>
+                </div>
+            </footer>
         </main>
     </div>
 
@@ -99,31 +119,7 @@
             </div>
         </div>
     </div>
-<!-- PDF预览模态框 -->
-<div class="modal" id="pdfModal" role="dialog" aria-modal="true" aria-labelledby="pdfModalTitle">
-    <!-- 现有模态框内容保持不变 -->
-</div>
 
-<!-- 底部声明区域 -->
-<footer class="footer-section">
-    <div class="footer-content">
-        <div class="footer-contacts">
-            <div class="contact-item">
-                <i class="fas fa-envelope contact-icon"></i>
-                <span>Support: <a href="mailto:support@skychartpro.top" class="contact-email">support@skychartpro.top</a></span>
-            </div>
-            <div class="contact-item">
-                <i class="fas fa-headset contact-icon"></i>
-                <span>Contact: <a href="mailto:contact@skychartpro.top" class="contact-email">contact@skychartpro.top</a></span>
-            </div>
-        </div>
-        <div class="footer-disclaimer">
-            <i class="fas fa-info-circle"></i>
-            本站航图内容均来源于Jeppesen航图，仅供参考和学习使用。SkyChart Pro不拥有这些航图的版权，所有权利归Jeppesen所有。
-        </div>
-    </div>
-</footer>
     <script src="script.js"></script>
 </body>
 </html>
-
