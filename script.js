@@ -833,6 +833,18 @@ let selectedAirport = null;
 
 // 初始化函数（页面入口）
 function init() {
+    // === 添加调试信息开始 ===
+    console.log('初始化开始...');
+    console.log('airports 数据量:', Object.keys(airports).length, '个分组');
+    
+    let totalAirports = 0;
+    for (const letter in airports) {
+        totalAirports += airports[letter].length;
+    }
+    console.log('airports 总机场数:', totalAirports, '个机场');
+    console.log('chartFiles 数据量:', Object.keys(chartFiles).length, '个机场');
+    // === 添加调试信息结束 ===
+    
     renderAirportList(); // 渲染左侧机场列表
     setupEventListeners(); // 绑定所有交互事件
     
@@ -845,6 +857,9 @@ function init() {
     setupModalLoading();     // 模态框加载状态
     setupFooterInteractions(); // 底部交互效果
     setupLiquidGlassEffect(); // 液态玻璃效果
+    
+    // === 添加最终调试信息 ===
+    console.log('初始化完成，chartFiles 数据量:', Object.keys(chartFiles).length, '个机场');
 }
 
 // 渲染机场列表（按字母分组展示）
@@ -921,6 +936,10 @@ function findAirportByCode(code) {
 
 // 加载指定机场的航图文件（含加载状态提示）
 function loadAirportCharts(airportCode) {
+    // === 添加调试信息 ===
+    console.log(`加载机场 ${airportCode} 的航图数据`);
+    console.log(`chartFiles[${airportCode}]:`, chartFiles[airportCode]);
+    
     // 1. 显示加载中状态
     showPDFLoading();
     
@@ -928,11 +947,14 @@ function loadAirportCharts(airportCode) {
     setTimeout(() => {
         // 从全局航图数据中获取当前机场的航图列表
         const charts = chartFiles[airportCode];
+        console.log(`机场 ${airportCode} 的航图数据:`, charts);
         
         // 3. 判断是否有航图数据，分情况处理
         if (charts && charts.length > 0) {
+            console.log(`找到 ${charts.length} 个航图文件`);
             renderPDFFiles(charts, airportCode); // 有数据则渲染航图卡片
         } else {
+            console.warn(`机场 ${airportCode} 没有航图数据`);
             showPDFEmptyState("该机场暂无航图文件"); // 无数据则显示空状态
         }
     }, 800); // 延迟800ms，提升用户感知体验
@@ -1429,6 +1451,36 @@ const missingCharts = {
         {"name": "滑行道指示图", "size": "1.4MB", "filename": "taxiway.pdf"}
     ]
 };
+// 安全地补全所有缺失的机场数据
+function completeChartData() {
+    console.log('开始补全航图数据...');
+    
+    // 遍历所有机场分组
+    for (const letter in airports) {
+        const airportsInGroup = airports[letter];
+        
+        // 遍历该分组中的每个机场
+        for (const airport of airportsInGroup) {
+            const airportCode = airport.code;
+            
+            // 如果这个机场在chartFiles中没有数据，就添加默认数据
+            if (!chartFiles[airportCode]) {
+                chartFiles[airportCode] = [
+                    { name: "进近程序图", size: "2.3MB", filename: "approach.pdf" },
+                    { name: "离场程序图", size: "1.7MB", filename: "departure.pdf" },
+                    { name: "机场平面图", size: "3.0MB", filename: "airport.pdf" },
+                    { name: "标准仪表进场", size: "2.1MB", filename: "arrival.pdf" },
+                    { name: "滑行道指示图", size: "1.4MB", filename: "taxiway.pdf" }
+                ];
+                console.log(`已为 ${airportCode} 添加默认航图数据`);
+            }
+        }
+    }
+    
+    // 确保现有的missingCharts数据也被合并
+    Object.assign(chartFiles, missingCharts);
+    console.log('航图数据补全完成，总共机场数量:', Object.keys(chartFiles).length);
+}
 
-// 合并到现有航图数据
-Object.assign(chartFiles, missingCharts);
+// 调用补全函数
+completeChartData();
