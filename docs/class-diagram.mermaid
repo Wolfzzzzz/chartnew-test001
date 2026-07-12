@@ -1,0 +1,134 @@
+%% SkyChart Pro 增量 · 模块/数据结构类图
+%% 以模块为类，展示关键属性(状态)与方法(函数)，并标注依赖关系
+
+classDiagram
+    direction LR
+
+    class State {
+        <<module: js/state.js>>
+        +DATA meta/airports/charts
+        +selectedAirport : string
+        +filterState : {search,country,sort}
+        +chartTypeFilter : string
+        +favorites : string[]
+        +currentView : 'dashboard'|'browse'
+        +recentAirports : string[]
+        +recentCharts : string[]   %% 复合键 code::filename
+        +favoriteCharts : string[] %% 复合键 code::filename
+        +accentPreset : 'pink'|'ocean'|'forest'
+    }
+
+    class Favorites {
+        <<module: js/favorites.js>>
+        +FAV_KEY = skychart_favorites
+        +FAV_CHART_KEY = skychart_fav_charts
+        +loadFavorites()
+        +saveFavorites()
+        +isFavorite(code)
+        +toggleFavorite(code)
+        +loadFavoriteCharts()
+        +saveFavoriteCharts()
+        +isFavoriteChart(key)
+        +toggleFavoriteChart(code, filename)
+    }
+
+    class Recent {
+        <<module: js/recent.js>>
+        +RECENT_AIRPORT_KEY
+        +RECENT_CHART_KEY
+        +RECENT_AIRPORT_MAX = 8
+        +RECENT_CHART_MAX = 12
+        +loadRecentAirports()
+        +addRecentAirport(code)
+        +loadRecentCharts()
+        +addRecentChart(code, filename)
+        +removeRecentAirport(code)
+        +removeRecentChart(key)
+        +clearRecents()
+        +renderMySection()
+    }
+
+    class Dashboard {
+        <<module: js/dashboard.js>>
+        -_countryDistCache
+        -_typeDistCache
+        +computeCountryDistribution()
+        +computeChartTypeDistribution()
+        +renderDashboard()
+        +handleDashboardCountryClick(country)
+        +handleDashboardTypeClick(type)
+        +switchView(view)
+    }
+
+    class Drawer {
+        <<module: js/drawer.js>>
+        +openAirportDrawer(code)
+        +closeAirportDrawer()
+    }
+
+    class ThemePreset {
+        <<module: js/theme-preset.js>>
+        +ACCENT_KEY = skychart_accent
+        +ACCENTS = [pink,ocean,forest]
+        +initAccent()
+        +setAccent(preset, persist)
+        +openPresetPanel()
+        +closePresetPanel()
+    }
+
+    class Charts {
+        <<module: js/charts.js>>
+        +loadAirportCharts(code)
+        +renderPDFFiles(files, code)
+        +openPDFViewer(code, filename)
+        +closePDFViewer()
+    }
+
+    class AirportList {
+        <<module: js/airport-list.js>>
+        +renderAirportItem(airport)
+        +renderAirportGroup(title, items, isFav)
+        +renderAirportList(list)
+    }
+
+    class Controls {
+        <<module: js/controls.js>>
+        +initControls()
+        +applyFilters()
+        +getVisibleAirports()
+        +renderStats()
+    }
+
+    class Events {
+        <<module: js/events.js>>
+        +setupEventListeners()
+    }
+
+    class Utils {
+        <<module: js/utils.js>>
+        +findAirportByCode(code)
+        +buildChartUrl(path)
+        +getChartType(filename)
+        +regionPrefixCountry(code)
+    }
+
+    %% 关系
+    Favorites ..> State : 读写 favorites/favoriteCharts
+    Recent ..> State : 读写 recentAirports/recentCharts
+    Recent ..> Charts : 触发 load/open
+    Dashboard ..> State : 读写 currentView/filterState/chartTypeFilter
+    Dashboard ..> Controls : applyFilters()
+    ThemePreset ..> State : 读写 accentPreset
+    Charts ..> Recent : addRecentAirport/addRecentChart
+    Charts ..> Favorites : isFavoriteChart/toggleFavoriteChart
+    AirportList ..> Favorites : isFavorite (机场级)
+    AirportList ..> Utils : findAirportByCode
+    Drawer ..> Utils : findAirportByCode
+    Drawer ..> State : 读 airport 字段
+    Events ..> Dashboard : 委托点击
+    Events ..> Recent : 委托点击/移除/清空
+    Events ..> Favorites : toggleFavoriteChart
+    Events ..> Drawer : open/close
+    Events ..> ThemePreset : 色板
+    Events ..> Charts : load/open
+    Events ..> AirportList : 信息按钮

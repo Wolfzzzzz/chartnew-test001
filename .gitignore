@@ -1,0 +1,18 @@
+# ===== Build / dependencies =====
+node_modules
+
+# ===== Large chart PDF data (2.3 GB) =====
+# Excluded from git on purpose — GitHub cannot host this volume.
+# Keep these locally; the deployed app references them at runtime.
+航图/
+
+# ===== OS / editor noise =====
+.DS_Store
+Thumbs.db
+
+# ===== Internal tooling / artifacts =====
+.workbuddy/
+.qa/
+
+# ===== Misc =====
+tencent1687383047954423452.txt

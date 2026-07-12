@@ -1,0 +1,69 @@
+%% SkyChart Pro 增量 · 关键调用时序图
+%% 涵盖 (a) 启动初始化 (b) 仪表盘国家条→筛选 (c) 收藏单图 (d) 切换强调色
+
+sequenceDiagram
+    autonumber
+    participant U as 用户
+    participant M as main.js(init)
+    participant S as state.js
+    participant F as favorites.js
+    participant R as recent.js
+    participant D as dashboard.js
+    participant C as controls.js
+    participant TH as theme-preset.js
+    participant E as events.js
+    participant CH as charts.js
+    participant DR as drawer.js
+
+    %% (a) 启动初始化
+    rect rgb(235,245,255)
+    note over M,DR: (a) 启动初始化 init()
+    M->>F: loadFavorites()
+    M->>R: loadRecentAirports() / loadRecentCharts()
+    M->>F: loadFavoriteCharts()
+    M->>S: 状态就绪 (currentView='browse' 等)
+    M->>C: renderAirportList() + applyFilters()
+    M->>TH: initAccent() → setAccent(saved,false)
+    TH->>S: accentPreset = saved
+    TH->>document: documentElement[data-accent]=saved
+    M->>R: renderMySection()  (我的区：收藏机场/航图/最近)
+    M->>D: renderDashboard()  (首渲并缓存 _countryDistCache/_typeDistCache)
+    M->>D: switchView('browse')
+    end
+
+    %% (b) 仪表盘国家条 → 筛选
+    rect rgb(240,255,240)
+    note over U,E: (b) 点击仪表盘国家条 → 筛选
+    U->>E: 点击 #dashboardView .dist-country-bar
+    E->>D: handleDashboardCountryClick(country)
+    D->>S: filterState.country = country
+    D->>D: switchView('browse')
+    D->>C: applyFilters()
+    C->>C: getVisibleAirports()
+    C->>C: renderAirportList(visible)
+    end
+
+    %% (c) 收藏单图
+    rect rgb(255,245,235)
+    note over U,CH: (c) 收藏单张航图
+    U->>E: 点击 .pdf-card .chart-fav-btn
+    E->>F: toggleFavoriteChart(code, filename)
+    F->>S: favoriteCharts 增/删 + saveFavoriteCharts()
+    E->>CH: renderPDFFiles(DATA.charts[selectedAirport], code)
+    CH-->>U: 卡片星标状态更新 (isFavoriteChart)
+    E->>R: renderMySection()  (收藏航图子区刷新)
+    end
+
+    %% (d) 切换强调色
+    rect rgb(245,235,255)
+    note over U,TH: (d) 切换强调色预设
+    U->>E: 点击 #accentToggle (🎨)
+    E->>TH: openPresetPanel()
+    TH->>U: 色板弹层显示
+    U->>E: 点击 .accent-swatch[data-accent=ocean]
+    E->>TH: setAccent('ocean')
+    TH->>S: accentPreset = 'ocean'
+    TH->>document: documentElement[data-accent]='ocean'
+    TH->>TH: localStorage.setItem(skychart_accent,'ocean')
+    note right of document: CSS 变量 --color-primary-500 / --shadow-glow 联动<br/>全部 UI 瞬时重着色，无需 JS 重渲
+    end

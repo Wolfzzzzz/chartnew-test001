@@ -12,88 +12,154 @@
     <div class="light-beam"></div>
     <div class="light-beam"></div>
     <div class="light-beam"></div>
-    
+
     <div class="container">
         <!-- 侧边栏 -->
         <aside class="sidebar">
+            <!-- 常驻折叠 / 展开按钮：移出 header，折叠态仍可见（T3） -->
+            <button class="sidebar-toggle-btn" id="sidebarToggle" aria-label="折叠/展开侧边栏">
+                <i class="fas fa-bars"></i>
+            </button>
+
             <div class="sidebar-header">
                 <div class="logo">
                     <div class="logo-icon"><i class="fas fa-plane"></i></div>
                     <span>SkyChart Pro</span>
                 </div>
-                <button class="toggle-btn" id="sidebarToggle" aria-label="关闭侧边栏">
-                    <i class="fas fa-times"></i>
+            </div>
+
+            <!-- 概览入口（增量：切换主内容视图） -->
+            <nav class="sidebar-nav">
+                <button class="nav-item" id="overviewNav" aria-label="概览仪表盘">
+                    <i class="fas fa-gauge-high"></i> 概览
                 </button>
+            </nav>
+
+            <!-- 控制栏：国家 / 排序 / 搜索 / 统计（T4） -->
+            <div class="list-controls">
+                <div class="control-row">
+                    <select id="countryFilter" class="control-select" aria-label="按国家筛选">
+                        <option value="all">全部国家</option>
+                    </select>
+                </div>
+                <div class="control-row">
+                    <select id="sortSelect" class="control-select" aria-label="排序方式">
+                        <option value="default">默认（按首字母分组）</option>
+                        <option value="code">按代码 A-Z</option>
+                        <option value="name">按名称 A-Z</option>
+                    </select>
+                </div>
+                <div class="search-box">
+                    <div class="search-icon"><i class="fas fa-search"></i></div>
+                    <input type="text" id="searchInput" placeholder="搜索机场四字代码或名称..." aria-label="搜索机场">
+                </div>
+                <div class="sidebar-stats" id="sidebarStats">机场 0 · 航图 0 · 显示 0</div>
             </div>
-            
-            <div class="search-box">
-                <div class="search-icon"><i class="fas fa-search"></i></div>
-                <input type="text" id="searchInput" placeholder="搜索机场四字代码或名称..." aria-label="搜索机场">
+
+            <!-- 「我的」聚合区（增量：最近机场 / 最近航图 / 收藏航图，可折叠） -->
+            <div class="my-section" id="mySection">
+                <button class="my-section-toggle" id="mySectionToggle" type="button" aria-label="折叠/展开我的">
+                    <i class="fas fa-user"></i> 我的
+                    <i class="fas fa-chevron-down my-section-chevron"></i>
+                </button>
+                <div class="my-section-body" id="mySectionBody">
+                    <!-- 由 renderMySection() 注入 -->
+                </div>
             </div>
-            
+
             <div class="airport-list-container">
                 <ul class="airport-list" id="airportList" role="list">
                     <!-- 机场列表将通过JS动态生成 -->
                 </ul>
             </div>
         </aside>
-        
+
         <!-- 主内容区域 -->
         <main class="main-content">
             <div class="main-header">
                 <h1 class="page-title">
-                    <i class="fas fa-map"></i> 
+                    <i class="fas fa-map"></i>
                     <span id="currentAirport">全球机场航图查看器</span>
                 </h1>
                 <div class="header-actions">
                     <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
                         <i class="fas fa-moon"></i>
                     </button>
+                    <!-- 强调色预设（增量：🎨 唤起色板） -->
+                    <button class="accent-toggle" id="accentToggle" aria-label="强调色">
+                        <i class="fas fa-palette"></i>
+                    </button>
                     <button class="mobile-toggle" id="mobileToggle" aria-label="打开侧边栏">
                         <i class="fas fa-bars"></i>
                     </button>
+                    <!-- 强调色色板弹层（增量） -->
+                    <div class="accent-panel" id="accentPanel">
+                        <div class="accent-panel-title">强调色</div>
+                        <div class="accent-swatches">
+                            <button class="accent-swatch" type="button" data-accent="pink" style="background:#f43f5e" title="粉" aria-label="粉"></button>
+                            <button class="accent-swatch" type="button" data-accent="ocean" style="background:#0ea5e9" title="海洋" aria-label="海洋"></button>
+                            <button class="accent-swatch" type="button" data-accent="forest" style="background:#22c55e" title="森林" aria-label="森林"></button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <!-- PDF 文件区域 -->
-            <section class="pdf-section fade-in">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-file-pdf"></i> 
-                        <span id="pdfSectionTitle">机场航图文件</span>
-                    </h2>
-                    <div class="section-actions">
-                        <div class="view-toggle">
-                            <button class="view-btn active" data-view="grid" aria-label="网格视图"><i class="fas fa-th"></i></button>
-                            <button class="view-btn" data-view="list" aria-label="列表视图"><i class="fas fa-list"></i></button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="pdf-container" id="pdfContainer" role="grid" aria-label="航图文件列表">
-                    <!-- PDF 文件卡片将通过JS动态生成 -->
-                </div>
+
+            <!-- 概览仪表盘视图（增量：D-01/D-02/D-03） -->
+            <section id="dashboardView" class="dashboard-view" hidden>
+                <!-- 由 renderDashboard() 注入 -->
             </section>
-            
-            <!-- 底部声明区域 -->
-            <footer class="footer-section">
-                <div class="footer-content">
-                    <div class="footer-contacts">
-                        <div class="contact-item">
-                            <i class="fas fa-envelope contact-icon"></i>
-                            <span>Support: <a href="mailto:support@skychartpro.top" class="contact-email">support@skychartpro.top</a></span>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-headset contact-icon"></i>
-                            <span>Contact: <a href="mailto:contact@skychartpro.top" class="contact-email">contact@skychartpro.top</a></span>
+
+            <!-- 浏览视图（原 PDF 区域 + 页脚） -->
+            <div id="browseView">
+                <!-- PDF 文件区域 -->
+                <section class="pdf-section fade-in">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-file-pdf"></i>
+                            <span id="pdfSectionTitle">机场航图文件</span>
+                        </h2>
+                        <div class="section-actions">
+                            <select id="chartTypeFilter" class="chart-type-filter" aria-label="航图类型筛选">
+                                <option value="all">全部航图类型</option>
+                                <option value="approach">进近图</option>
+                                <option value="departure">离场图</option>
+                                <option value="arrival">进场图</option>
+                                <option value="taxiway">滑行图</option>
+                                <option value="airport">机场图</option>
+                                <option value="other">其它</option>
+                            </select>
+                            <div class="view-toggle">
+                                <button class="view-btn active" data-view="grid" aria-label="网格视图"><i class="fas fa-th"></i></button>
+                                <button class="view-btn" data-view="list" aria-label="列表视图"><i class="fas fa-list"></i></button>
+                            </div>
                         </div>
                     </div>
-                    <div class="footer-disclaimer">
-                        <i class="fas fa-info-circle"></i>
-                        本站航图内容均来源于Jeppesen航图，仅供参考和学习使用。SkyChart Pro不拥有这些航图的版权，所有权利归Jeppesen所有。
+
+                    <div class="pdf-container" id="pdfContainer" role="grid" aria-label="航图文件列表">
+                        <!-- PDF 文件卡片将通过JS动态生成 -->
                     </div>
-                </div>
-            </footer>
+                </section>
+
+                <!-- 底部声明区域 -->
+                <footer class="footer-section">
+                    <div class="footer-content">
+                        <div class="footer-contacts">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope contact-icon"></i>
+                                <span>Support: <a href="mailto:support@skychartpro.top" class="contact-email">support@skychartpro.top</a></span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-headset contact-icon"></i>
+                                <span>Contact: <a href="mailto:contact@skychartpro.top" class="contact-email">contact@skychartpro.top</a></span>
+                            </div>
+                        </div>
+                        <div class="footer-disclaimer">
+                            <i class="fas fa-info-circle"></i>
+                            本站航图内容均来源于Jeppesen航图，仅供参考和学习使用。SkyChart Pro不拥有这些航图的版权，所有权利归Jeppesen所有。
+                        </div>
+                    </div>
+                </footer>
+            </div>
         </main>
     </div>
 
@@ -120,6 +186,55 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- 机场详情抽屉（增量：右侧滑入 + overlay + ESC，复用 .modal 模式） -->
+    <div class="modal drawer-right" id="airportDrawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+        <div class="drawer-overlay" id="drawerOverlay"></div>
+        <div class="drawer-panel">
+            <button class="drawer-close" id="drawerClose" aria-label="关闭详情">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="drawer-body">
+                <h2 class="drawer-title" id="drawerTitle">机场详情</h2>
+                <div class="drawer-code" id="drawerCode"></div>
+                <h3 class="drawer-name" id="drawerName"></h3>
+                <div class="drawer-country" id="drawerCountry"></div>
+                <div class="drawer-stats">
+                    <div class="drawer-stat">
+                        <span class="drawer-stat-value" id="drawerChartCount"></span>
+                        <span class="drawer-stat-label">航图数</span>
+                    </div>
+                    <div class="drawer-stat">
+                        <span class="drawer-stat-value" id="drawerGroup"></span>
+                        <span class="drawer-stat-label">ICAO 分组</span>
+                    </div>
+                </div>
+                <p class="drawer-group-desc" id="drawerGroupDesc"></p>
+                <div class="drawer-actions">
+                    <button class="drawer-btn drawer-view-charts" id="drawerViewCharts" type="button">查看航图</button>
+                    <button class="drawer-btn drawer-fav-btn" id="drawerFavBtn" type="button">
+                        <i class="far fa-star"></i> 收藏机场
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="charts-data.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/dom.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/favorites.js"></script>
+    <script src="js/airport-list.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/controls.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/keyboard.js"></script>
+    <script src="js/events.js"></script>
+    <!-- 增量模块（位于 main.js 之前） -->
+    <script src="js/dashboard.js"></script>
+    <script src="js/recent.js"></script>
+    <script src="js/drawer.js"></script>
+    <script src="js/theme-preset.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
