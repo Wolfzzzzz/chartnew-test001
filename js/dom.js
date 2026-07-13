@@ -38,6 +38,8 @@ const overviewNav = document.getElementById("overviewNav");
 // 强调色色板（header）
 const accentToggle = document.getElementById("accentToggle");
 const accentPanel = document.getElementById("accentPanel");
+const uiToggle = document.getElementById("uiToggle");
+const uiThemeLabel = document.getElementById("uiThemeLabel");
 
 // 机场详情抽屉（.modal 模式）
 const airportDrawer = document.getElementById("airportDrawer");

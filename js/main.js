@@ -14,6 +14,7 @@
 function init() {
     // 二期增量：先初始化语言（读 localStorage + 首渲动态区，含页脚/仪表盘）
     initLang();
+    initUiTheme(); // 初始化 UI 视觉主题（modern / cockpit / cyber）
     renderFooter(); // 维护者 + 数据来源两层页脚（t() 取词）
     setupBackground(); // 极光背景 + reduced-motion 降级
 

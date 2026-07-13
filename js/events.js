@@ -328,6 +328,15 @@ function setupEventListeners() {
         });
     }
 
+    // 17. UI 视觉主题切换：循环 modern → cockpit → cyber → modern
+    if (uiToggle) {
+        uiToggle.addEventListener("click", () => {
+            const idx = UI_THEMES.indexOf(uiTheme);
+            const next = UI_THEMES[(idx + 1) % UI_THEMES.length];
+            setUiTheme(next, true);
+        });
+    }
+
     // 17. 全局委托：批量下载 / 随机发现 / 快捷键面板关闭（C-02 / D-06 / D-05）
     document.addEventListener("click", (e) => {
         // 17a. 批量下载本机场全部（section-header 或 抽屉 内按钮）

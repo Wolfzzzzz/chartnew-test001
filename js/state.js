@@ -51,5 +51,9 @@ let accentPreset = 'pink';
 let lang = 'zh';
 const LANG_KEY = 'skychart_lang';
 
+// UI 视觉主题（三套：modern / cockpit / cyber）
+let uiTheme = 'modern';
+const UI_KEY = 'skychart_ui';
+
 // 是否降级动画（由 setupBackground 写入，prefers-reduced-motion 时为 true）
 let reducedMotion = false;

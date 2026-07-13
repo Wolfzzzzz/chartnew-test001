@@ -21,6 +21,9 @@ const I18N = {
         "nav.overview": "概览",
         "lang.toggle": "中 / EN",
         "header.random": "发现",
+        "ui.modern": "现代",
+        "ui.cockpit": "驾驶舱",
+        "ui.cyber": "赛博",
 
         /* ---- 航图类型筛选 ---- */
         "typefilter.all": "全部航图类型",
@@ -115,6 +118,9 @@ const I18N = {
         "nav.overview": "Overview",
         "lang.toggle": "EN / 中",
         "header.random": "Discover",
+        "ui.modern": "Modern",
+        "ui.cockpit": "Cockpit",
+        "ui.cyber": "Cyber",
 
         /* ---- Chart Type Filter ---- */
         "typefilter.all": "All Chart Types",

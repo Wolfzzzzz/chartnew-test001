@@ -125,6 +125,112 @@
     --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
+/* ===== UI 视觉主题预设（三套）===============
+   通过 data-ui 属性切换，与 data-theme(明暗) 和 data-accent(强调色) 正交。
+   modern = 极简现代白（默认）、cockpit = 深色驾驶舱、cyber = 赛博霓虹 */
+[data-ui="cockpit"] {
+    --color-neutral-50: #0a0a14;
+    --color-neutral-100: #12122a;
+    --color-neutral-200: #1e1e3a;
+    --color-neutral-300: #2e2e4e;
+    --color-neutral-400: #4a4a6a;
+    --color-neutral-500: #7a7a9a;
+    --color-neutral-600: #a8a8c8;
+    --color-neutral-700: #d0d0e8;
+    --color-neutral-800: #e8e8f4;
+    --color-neutral-900: #f4f4fc;
+    --bg-gradient: linear-gradient(135deg, #0a0a14, #12122a);
+    --bg-texture: none;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5), 0 4px 10px rgba(0, 0, 0, 0.3);
+    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3);
+    --shadow-2xl: 0 25px 60px rgba(0, 0, 0, 0.6);
+    --glass-bg: rgba(18, 18, 42, 0.35);
+    --glass-border: rgba(99, 102, 241, 0.15);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --glass-blur: blur(12px);
+}
+
+[data-ui="cockpit"] .sidebar {
+    border-right: 1px solid rgba(99, 102, 241, 0.12);
+}
+
+[data-ui="cockpit"] .pdf-card {
+    background: linear-gradient(145deg, rgba(18, 18, 42, 0.6), rgba(30, 30, 58, 0.4));
+    border-color: rgba(99, 102, 241, 0.12);
+}
+
+[data-ui="cockpit"] .modal-content {
+    background: linear-gradient(180deg, rgba(18, 18, 42, 0.95), rgba(30, 30, 58, 0.9));
+}
+
+[data-ui="cockpit"] .footer {
+    border-top-color: rgba(99, 102, 241, 0.12);
+    background: rgba(10, 10, 20, 0.6);
+}
+
+[data-ui="cyber"] {
+    --color-neutral-50: #0b001a;
+    --color-neutral-100: #160028;
+    --color-neutral-200: #280044;
+    --color-neutral-300: #3d0066;
+    --color-neutral-400: #6a0099;
+    --color-neutral-500: #aa44ff;
+    --color-neutral-600: #cc88ff;
+    --color-neutral-700: #e6bbff;
+    --color-neutral-800: #f3ddff;
+    --color-neutral-900: #fcf0ff;
+    --bg-gradient: linear-gradient(135deg, #0b001a, #160028, #0d0030);
+    --bg-texture: none;
+    --shadow-sm: 0 1px 3px rgba(170, 68, 255, 0.15);
+    --shadow-md: 0 4px 12px rgba(170, 68, 255, 0.2), 0 2px 4px rgba(170, 68, 255, 0.1);
+    --shadow-lg: 0 10px 25px rgba(170, 68, 255, 0.25), 0 4px 10px rgba(170, 68, 255, 0.15);
+    --shadow-xl: 0 20px 40px rgba(170, 68, 255, 0.3), 0 10px 20px rgba(170, 68, 255, 0.15);
+    --shadow-2xl: 0 25px 60px rgba(170, 68, 255, 0.35);
+    --glass-bg: rgba(22, 0, 40, 0.4);
+    --glass-border: rgba(170, 68, 255, 0.2);
+    --glass-shadow: 0 8px 32px rgba(170, 68, 255, 0.3);
+    --glass-blur: blur(12px);
+}
+
+[data-ui="cyber"] .sidebar {
+    border-right: 1px solid rgba(170, 68, 255, 0.15);
+}
+
+[data-ui="cyber"] .pdf-card {
+    background: linear-gradient(145deg, rgba(22, 0, 40, 0.6), rgba(40, 0, 68, 0.4));
+    border-color: rgba(170, 68, 255, 0.15);
+}
+
+[data-ui="cyber"] .modal-content {
+    background: linear-gradient(180deg, rgba(11, 0, 26, 0.95), rgba(22, 0, 40, 0.9));
+}
+
+[data-ui="cyber"] .footer {
+    border-top-color: rgba(170, 68, 255, 0.15);
+    background: rgba(11, 0, 26, 0.6);
+}
+
+[data-ui="cyber"] .light-beam {
+    opacity: 0.6;
+    background: radial-gradient(ellipse at center, var(--color-accent-purple) 0%, transparent 70%);
+}
+
+[data-ui="cyber"] ::-webkit-scrollbar-track {
+    background: var(--color-neutral-100) !important;
+}
+
+[data-ui="cyber"] ::-webkit-scrollbar-thumb {
+    background: var(--color-neutral-300) !important;
+}
+
+/* 未设 data-ui 或 data-ui="modern" 时为默认极简现代白（沿用 :root 与 dark 变量），
+   仅在此微调 */
+[data-ui="modern"] .sidebar {
+    border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
+
 /* ===== 强调色预设（增量 T-09）：与 [data-theme] 正交 =====
    置于 [data-theme="dark"] 之后，同等特异度下 accent 胜出，且与明暗主题联动 */
 [data-accent="pink"] {
@@ -709,7 +815,8 @@ body {
 
 /* 语言切换 & 随机发现按钮（B-02 / D-06，沿用玻璃态风格，触控 ≥44px） */
 .lang-toggle,
-.random-btn {
+.random-btn,
+.ui-toggle {
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     color: var(--color-primary-500);
@@ -730,7 +837,8 @@ body {
 }
 
 .lang-toggle:hover,
-.random-btn:hover {
+.random-btn:hover,
+.ui-toggle:hover {
     transform: scale(1.05);
     box-shadow: var(--shadow-glow);
     background: rgba(244, 63, 94, 0.1);
@@ -1527,6 +1635,7 @@ iframe {
 .accent-toggle,
 .lang-toggle,
 .random-btn,
+.ui-toggle,
 .mobile-toggle,
 .view-btn,
 .airport-item,
@@ -1542,6 +1651,7 @@ iframe {
 .accent-toggle::after,
 .lang-toggle::after,
 .random-btn::after,
+.ui-toggle::after,
 .mobile-toggle::after,
 .view-btn::after,
 .airport-item::after,
@@ -1568,6 +1678,7 @@ iframe {
 .accent-toggle:hover::after,
 .lang-toggle:hover::after,
 .random-btn:hover::after,
+.ui-toggle:hover::after,
 .mobile-toggle:hover::after,
 .view-btn:hover::after,
 .airport-item:hover::after,
@@ -2482,6 +2593,7 @@ iframe {
 .accent-toggle:active,
 .lang-toggle:active,
 .random-btn:active,
+.ui-toggle:active,
 .view-btn:active,
 .download-btn:active,
 .batch-download-btn:active,
@@ -2512,6 +2624,7 @@ iframe {
 .accent-toggle,
 .lang-toggle,
 .random-btn,
+.ui-toggle,
 .view-btn,
 .nav-item,
 .my-section,
@@ -2531,6 +2644,7 @@ iframe {
 [data-theme="dark"] .accent-toggle,
 [data-theme="dark"] .lang-toggle,
 [data-theme="dark"] .random-btn,
+[data-theme="dark"] .ui-toggle,
 [data-theme="dark"] .view-btn,
 [data-theme="dark"] .nav-item,
 [data-theme="dark"] .my-section,
@@ -2547,13 +2661,15 @@ iframe {
 /* ---- F-02 移动端：语言/发现按钮在小屏仅显图标，保证可达 ---- */
 @media (max-width: 576px) {
     .lang-toggle,
-    .random-btn {
+    .random-btn,
+    .ui-toggle {
         padding: 0;
         width: 44px;
     }
 
     .lang-toggle span,
-    .random-btn span {
+    .random-btn span,
+    .ui-toggle span {
         display: none;
     }
 

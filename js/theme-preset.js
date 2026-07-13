@@ -57,3 +57,30 @@ function openPresetPanel() {
 function closePresetPanel() {
     if (accentPanel) accentPanel.classList.remove("active");
 }
+
+/* ===== UI 视觉主题切换（三套：modern / cockpit / cyber）=============== */
+const UI_THEMES = ['modern', 'cockpit', 'cyber'];
+
+/** 初始化 UI 主题（从 localStorage 读取）。 */
+function initUiTheme() {
+    let saved = 'modern';
+    try { saved = localStorage.getItem(UI_KEY) || 'modern'; } catch (e) { saved = 'modern'; }
+    if (UI_THEMES.indexOf(saved) < 0) saved = 'modern';
+    setUiTheme(saved, false);
+}
+
+/**
+ * 设置 UI 视觉主题。
+ * @param {string} theme 'modern' | 'cockpit' | 'cyber'
+ * @param {boolean} [persist=true]
+ */
+function setUiTheme(theme, persist) {
+    if (UI_THEMES.indexOf(theme) < 0) theme = 'modern';
+    uiTheme = theme;
+    document.documentElement.setAttribute('data-ui', theme);
+    // 更新标签文本
+    if (uiThemeLabel) uiThemeLabel.textContent = t('ui.' + theme);
+    if (persist !== false) {
+        try { localStorage.setItem(UI_KEY, theme); } catch (e) { /* ignore */ }
+    }
+}
