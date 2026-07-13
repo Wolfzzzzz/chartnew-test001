@@ -1,0 +1,89 @@
+%% SkyChart Pro 二期增量 · 关键调用时序图
+%% 覆盖 (a) 启动初始化(含 i18n/footer/background) (b) 点击语言切换
+%%      (c) 点击航图下载/批量下载 (d) 远程 PDF 加载失败兜底
+
+sequenceDiagram
+    autonumber
+    participant U as 用户
+    participant M as main.js(init)
+    participant I as i18n.js
+    participant F as footer.js
+    participant BG as background.js
+    participant S as state.js
+    participant CH as charts.js
+    participant U2 as utils.js
+    participant DL as downloads.js
+    participant MD as modal.js
+    participant K as keyboard.js
+    participant SH as shortcuts.js
+    participant E as events.js
+
+    %% (a) 启动初始化
+    rect rgb(235,245,255)
+    note over M,SH: (a) 启动初始化 init()
+    M->>S: 状态就绪 (lang='zh', reducedMotion=false)
+    M->>I: initLang() → 读 localStorage(skychart_lang)
+    I->>S: lang = saved || 'zh'
+    I->>I: applyLang() → 回填 [data-i18n] + renderDashboard/renderMySection
+    M->>F: renderFooter()（维护者层 + 数据来源层，t() 取词）
+    M->>BG: setupBackground() → 检测 prefers-reduced-motion 写 data-reduced-motion
+    M->>CH: renderDashboard() / renderMySection() / switchView('browse')
+    M->>MD: setupModalLoading()（error→showPDFFallback, 8s 超时兜底）
+    end
+
+    %% (b) 点击语言切换
+    rect rgb(240,255,240)
+    note over U,I: (b) 点击 🌐 语言切换
+    U->>E: 点击 #langToggle
+    E->>I: lang 取反 (zh<->en) + localStorage.setItem
+    I->>I: applyLang()
+    I->>I: 回填所有 [data-i18n] 文本
+    I->>CH: renderDashboard()（标签 t() 即时切换）
+    I->>F: renderFooter()（页脚文案 t() 切换）
+    I->>S: lang 已持久化（刷新保持）
+    end
+
+    %% (c) 航图下载 / 批量下载
+    rect rgb(255,245,235)
+    note over U,DL: (c) 单图下载 & 批量下载
+    U->>E: 点击 .chart-download-btn（单图）
+    E->>DL: downloadChart(code, filename)
+    DL->>U2: buildChartUrl(chart.path) → 远程 URL
+    DL->>U: <a download href=远程URL> 点击（跨域退化为新标签）
+
+    U->>E: 点击 .batch-download-btn（批量）
+    E->>DL: downloadAllForAirport(code)
+    loop 每张航图 i*400ms
+        DL->>DL: downloadChart(code, f.filename)
+        DL->>U2: buildChartUrl(...)
+    end
+    DL->>U: showBatchHint(t('download.batchHint'))（提示允许多下载）
+    end
+
+    %% (d) 远程 PDF 加载失败兜底
+    rect rgb(245,235,255)
+    note over U,MD: (d) 远程 PDF 加载失败（404/超时/网络）
+    U->>E: 点击 .pdf-card → openPDFViewer(code, filename)
+    E->>CH: openPDFViewer(code, filename)
+    CH->>U2: buildChartUrl(chart.path) → 远程 URL
+    CH->>CH: modalLoading 显示 spinner + 启动 modalLoadTimer(8s)
+    CH->>CH: pdfViewer.src = url
+    alt iframe 触发 error 事件
+        CH->>MD: showPDFFallback(url, code)
+        MD->>I: t('pdf.failTitle'/'pdf.failDesc'/'pdf.openSource'/'pdf.downloadAll')
+        MD->>U: 友好提示 + [在源站打开] + [下载全部航图包] 链接
+    else 8s 内无 load/error（超时兜底）
+        CH->>MD: 超时 → showPDFFallback(url, code)
+        MD->>U: 同上兜底 UI（避免永久转圈/白屏）
+    end
+    end
+
+    %% (e) 快捷键帮助（D-05 补充）
+    rect rgb(255,250,235)
+    note over U,SH: (e) 按 ? 打开快捷键帮助
+    U->>K: 按 '?'（非输入态）
+    K->>SH: openShortcutHelp()
+    SH->>SH: 填充 #shortcutHelpModal + .modal.active + 锁滚动
+    U->>E: 按 Esc
+    E->>SH: closeShortcutHelp() → 移除 .active
+    end

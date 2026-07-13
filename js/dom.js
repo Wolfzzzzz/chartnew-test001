@@ -51,3 +51,22 @@ const drawerGroupDesc = document.getElementById("drawerGroupDesc");
 const drawerViewCharts = document.getElementById("drawerViewCharts");
 const drawerFavBtn = document.getElementById("drawerFavBtn");
 const drawerOverlay = document.getElementById("drawerOverlay");
+const drawerBatchDownload = document.getElementById("drawerBatchDownload");
+
+// 语言切换按钮（header，B-02）
+const langToggle = document.getElementById("langToggle");
+
+// 页脚挂载点（footer.js 注入两层信息，A-02/E-01/E-02）
+const footerEl = document.getElementById("footer");
+
+// 快捷键帮助面板（shortcuts.js，D-05）
+const shortcutHelpModal = document.getElementById("shortcutHelpModal");
+
+// 随机发现按钮（header / dashboard，D-06）
+const randomBtn = document.getElementById("randomBtn");
+
+// 航图列表区「批量下载本机场全部」按钮（charts.js 写入 data-code，C-02）
+const batchDownloadBtn = document.getElementById("batchDownloadBtn");
+
+// 极光背景层（background.js 可选控制，D-01）
+const auroraLayer = document.getElementById("auroraLayer");

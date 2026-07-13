@@ -148,6 +148,28 @@
     --shadow-glow: 0 0 15px rgba(34, 197, 94, 0.45);
 }
 
+/* 新增强调色预设（D-07，与 [data-theme] 正交，置于 forest 之后） */
+[data-accent="sunset"] {
+    --color-primary-500: #f97316;
+    --color-primary-400: #fb923c;
+    --color-primary-600: #ea580c;
+    --shadow-glow: 0 0 15px rgba(249, 115, 22, 0.45);
+}
+
+[data-accent="aurora"] {
+    --color-primary-500: #8b5cf6;
+    --color-primary-400: #a78bfa;
+    --color-primary-600: #7c3aed;
+    --shadow-glow: 0 0 15px rgba(139, 92, 246, 0.45);
+}
+
+[data-accent="sakura"] {
+    --color-primary-500: #ec4899;
+    --color-primary-400: #f472b6;
+    --color-primary-600: #db2777;
+    --shadow-glow: 0 0 15px rgba(236, 72, 153, 0.45);
+}
+
 body {
     background-color: var(--color-neutral-100);
     background-image: var(--bg-gradient), var(--bg-texture);
@@ -158,32 +180,55 @@ body {
     line-height: 1.5;
 }
 
-/* 动态光线效果 */
-.light-beam {
+/* 动态极光背景（D-01，纯 CSS；首条光随强调色联动，F-01） */
+.aurora {
     position: fixed;
-    width: 200vw;
-    height: 200vh;
-    top: -50vh;
-    left: -50vw;
-    background: radial-gradient(circle at center, rgba(244, 63, 94, 0.1) 0%, transparent 70%);
+    width: 60vw;
+    height: 60vw;
+    border-radius: 50%;
+    filter: blur(90px);
     z-index: -1;
-    animation: beamRotate 40s linear infinite;
     pointer-events: none;
+    opacity: 0.55;
+    transition: background 0.6s ease, opacity 0.4s ease;
+    will-change: transform;
 }
 
-.light-beam:nth-child(2) {
-    background: radial-gradient(circle at center, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
-    animation: beamRotate 50s linear infinite reverse;
+/* 首条：联动 --color-primary-500（随明暗/强调色变化） */
+.aurora-1 {
+    top: -22vh;
+    left: -12vw;
+    background: radial-gradient(circle at center, var(--color-primary-500) 0%, transparent 70%);
+    animation: auroraFloat1 26s ease-in-out infinite;
 }
 
-.light-beam:nth-child(3) {
-    background: radial-gradient(circle at center, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
-    animation: beamRotate 60s linear infinite;
+.aurora-2 {
+    bottom: -26vh;
+    right: -12vw;
+    background: radial-gradient(circle at center, var(--color-accent-cyan) 0%, transparent 70%);
+    animation: auroraFloat2 32s ease-in-out infinite;
 }
 
-@keyframes beamRotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.aurora-3 {
+    top: 32vh;
+    right: 18vw;
+    background: radial-gradient(circle at center, var(--color-accent-emerald) 0%, transparent 70%);
+    animation: auroraFloat3 38s ease-in-out infinite;
+}
+
+@keyframes auroraFloat1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(8vw, 6vh) scale(1.15); }
+}
+
+@keyframes auroraFloat2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-6vw, -8vh) scale(1.2); }
+}
+
+@keyframes auroraFloat3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-5vw, 5vh) scale(1.1); }
 }
 
 /* 主布局 */
@@ -661,6 +706,43 @@ body {
     background: rgba(244, 63, 94, 0.1);
 }
 
+/* 语言切换 & 随机发现按钮（B-02 / D-06，沿用玻璃态风格，触控 ≥44px） */
+.lang-toggle,
+.random-btn {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    color: var(--color-primary-500);
+    height: 44px;
+    padding: 0 14px;
+    border-radius: var(--border-radius-lg);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: var(--glass-shadow);
+    border: 1px solid var(--glass-border);
+    transition: all 0.3s ease;
+    display: flex;
+    white-space: nowrap;
+}
+
+.lang-toggle:hover,
+.random-btn:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-glow);
+    background: rgba(244, 63, 94, 0.1);
+}
+
+.random-btn {
+    color: var(--color-accent-amber);
+}
+
+.random-btn:hover {
+    background: rgba(245, 158, 11, 0.12);
+}
+
 .pdf-section {
     background: var(--color-neutral-100);
     border-radius: var(--border-radius-xl);
@@ -762,6 +844,144 @@ body {
 
 .pdf-card:hover::before {
     transform: scaleX(1);
+}
+
+/* 航图卡片下载按钮（C-01，与星标并列，右上角） */
+.chart-download-btn {
+    position: absolute;
+    top: 10px;
+    right: 50px; /* 让位给收藏星标 */
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--glass-border);
+    color: var(--color-neutral-500);
+    width: 32px;
+    height: 32px;
+    border-radius: var(--border-radius-full);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    backdrop-filter: var(--glass-blur);
+    transition: transform 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+[data-theme="dark"] .chart-download-btn {
+    background: rgba(15, 23, 42, 0.6);
+}
+
+.chart-download-btn:hover {
+    transform: scale(1.12);
+    color: var(--color-primary-500);
+    background: rgba(244, 63, 94, 0.12);
+}
+
+/* 批量下载按钮（C-02，section-header 与抽屉内共用） */
+.batch-download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    color: var(--color-primary-500);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--glass-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+}
+
+.batch-download-btn:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-primary-500);
+    box-shadow: var(--shadow-glow);
+}
+
+.drawer-batch-btn {
+    background: var(--glass-bg);
+    color: var(--color-primary-500);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.drawer-batch-btn:hover {
+    color: var(--color-primary-500);
+    border-color: var(--color-primary-500);
+}
+
+/* 航图卡片类型彩标 + 元信息行（D-02） */
+.pdf-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.chart-type-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: var(--border-radius-full);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--tag-color);
+    border: 1px solid var(--tag-color);
+    background: color-mix(in srgb, var(--tag-color) 12%, transparent);
+}
+
+/* 轻提示 toast（批量下载引导） */
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 32px;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--color-neutral-800);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: var(--border-radius-lg);
+    font-size: 14px;
+    box-shadow: var(--shadow-xl);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    z-index: 2000;
+    pointer-events: none;
+    max-width: 90vw;
+}
+
+.toast--show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+[data-theme="dark"] .toast {
+    background: var(--color-neutral-900);
+}
+
+/* PDF 加载提示文案（D-04） */
+.loading-text {
+    margin-left: 12px;
+    color: var(--color-neutral-500);
+    font-size: 14px;
+}
+
+/* PDF 失败兜底入口（A-03） */
+.pdf-fallback-actions {
+    display: flex;
+    gap: var(--size-md);
+    justify-content: center;
+    margin-top: var(--size-md);
+    flex-wrap: wrap;
 }
 
 .pdf-container.list-view .pdf-card {
@@ -1008,12 +1228,12 @@ iframe {
     box-shadow: 0 10px 25px rgba(244, 63, 94, 0.4);
 }
 
-/* 底部声明区域样式 */
+/* 底部声明区域样式（二期：维护者层 + 数据来源层） */
 .footer-section {
     background: linear-gradient(90deg, rgba(244, 63, 94, 0.05), rgba(99, 102, 241, 0.05));
     border-top: 1px solid var(--color-neutral-200);
     margin-top: var(--size-2xl);
-    padding: var(--size-lg);
+    padding: var(--size-lg) var(--size-xl);
     border-radius: var(--border-radius-lg);
 }
 
@@ -1023,57 +1243,124 @@ iframe {
     text-align: center;
     color: var(--color-neutral-600);
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
-.footer-contacts {
+/* 上层：维护者（醒目） */
+.footer-maintainer {
     display: flex;
+    align-items: center;
     justify-content: center;
-    gap: var(--size-xl);
-    margin-bottom: var(--size-md);
+    flex-wrap: wrap;
+    gap: 8px 16px;
+}
+
+.footer-maintainer-links {
+    display: flex;
+    align-items: center;
+    gap: 10px 18px;
     flex-wrap: wrap;
 }
 
-.contact-item {
-    display: flex;
+.footer-label {
+    display: inline-flex;
     align-items: center;
-    gap: var(--size-sm);
-    padding: var(--size-sm) var(--size-md);
-    background: var(--color-neutral-50);
-    border-radius: var(--border-radius-md);
-    border: 1px solid var(--color-neutral-200);
-    transition: all 0.3s ease;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-neutral-400);
 }
 
-.contact-item:hover {
-    background: var(--color-neutral-100);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-sm);
-}
-
-.contact-icon {
-    color: var(--color-primary-500);
-    font-size: 16px;
-}
-
-.contact-email {
+.footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     color: var(--color-primary-600);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 14px;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.contact-email:hover {
-    color: var(--color-accent-indigo);
+.footer-link:hover {
+    color: var(--color-primary-500);
+    transform: translateY(-1px);
     text-decoration: underline;
+}
+
+.footer-link--accent {
+    color: var(--color-primary-500);
+    background: rgba(244, 63, 94, 0.1);
+    padding: 6px 14px;
+    border-radius: var(--border-radius-full);
+    border: 1px solid rgba(244, 63, 94, 0.2);
+}
+
+.footer-link--accent:hover {
+    background: rgba(244, 63, 94, 0.18);
+    text-decoration: none;
+}
+
+/* 分隔线 */
+.footer-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-neutral-300), transparent);
+    margin: var(--size-md) auto;
+    max-width: 640px;
+}
+
+/* 下层：数据来源（次要） */
+.footer-source {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.footer-source-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    color: var(--color-neutral-600);
+    font-size: 13px;
+}
+
+.footer-dot {
+    color: var(--color-neutral-400);
+}
+
+.footer-source-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+}
+
+.footer-original {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--color-neutral-500);
+}
+
+.footer-original-label {
+    font-weight: 600;
+    color: var(--color-neutral-600);
+    margin-right: 4px;
 }
 
 .footer-disclaimer {
     color: var(--color-neutral-500);
-    font-size: 13px;
+    font-size: 12px;
     border-top: 1px solid var(--color-neutral-200);
     padding-top: var(--size-md);
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 860px;
+    margin: var(--size-md) auto 0;
 }
 
 /* 深色主题适配 */
@@ -1081,13 +1368,13 @@ iframe {
     background: linear-gradient(90deg, rgba(244, 63, 94, 0.1), rgba(99, 102, 241, 0.1));
 }
 
-[data-theme="dark"] .contact-item {
-    background: var(--color-neutral-800);
-    border-color: var(--color-neutral-700);
+[data-theme="dark"] .footer-link--accent {
+    background: rgba(244, 63, 94, 0.16);
+    border-color: rgba(244, 63, 94, 0.3);
 }
 
-[data-theme="dark"] .contact-item:hover {
-    background: var(--color-neutral-700);
+[data-theme="dark"] .footer-divider {
+    background: linear-gradient(90deg, transparent, var(--color-neutral-700), transparent);
 }
 
 /* 响应式设计 */
@@ -1273,20 +1560,30 @@ iframe {
 /* 添加液态玻璃效果到特定元素 */
 .search-box input,
 .theme-toggle,
+.accent-toggle,
+.lang-toggle,
+.random-btn,
 .mobile-toggle,
 .view-btn,
 .airport-item,
-.pdf-card {
+.pdf-card,
+.batch-download-btn,
+.chart-download-btn {
     position: relative;
     overflow: hidden;
 }
 
 .search-box input::after,
 .theme-toggle::after,
+.accent-toggle::after,
+.lang-toggle::after,
+.random-btn::after,
 .mobile-toggle::after,
 .view-btn::after,
 .airport-item::after,
-.pdf-card::after {
+.pdf-card::after,
+.batch-download-btn::after,
+.chart-download-btn::after {
     content: '';
     position: absolute;
     top: 0;
@@ -1304,10 +1601,15 @@ iframe {
 
 .search-box input:hover::after,
 .theme-toggle:hover::after,
+.accent-toggle:hover::after,
+.lang-toggle:hover::after,
+.random-btn:hover::after,
 .mobile-toggle:hover::after,
 .view-btn:hover::after,
 .airport-item:hover::after,
-.pdf-card:hover::after {
+.pdf-card:hover::after,
+.batch-download-btn:hover::after,
+.chart-download-btn:hover::after {
     opacity: 1;
 }
 
@@ -2140,4 +2442,201 @@ iframe {
     .stat-cards {
         grid-template-columns: 1fr;
     }
+}
+
+/* =======================================================================
+   二期增量样式补丁（D-01 极光 / D-02 彩标 / D-03 入场 / D-05 快捷键面板 /
+   D-06 发现 / F-01 玻璃细节 / F-02 移动端 / F-03 统一状态 / F-04 微交互）
+   全部复用 --glass-* / --border-radius-* / --color-primary-500 / --shadow-glow
+   ======================================================================= */
+
+/* 入场渐显（D-03）：卡片淡入上移 */
+.fade-in {
+    animation: fadeIn 0.5s ease both;
+}
+
+/* 类型图例图标（D-02） */
+.donut-legend-icon {
+    width: 16px;
+    text-align: center;
+    font-size: 13px;
+}
+
+/* ---- 快捷键帮助面板（D-05） ---- */
+.shortcut-modal-content {
+    max-width: 440px;
+    width: 92%;
+}
+
+.shortcut-body {
+    padding: var(--size-lg);
+}
+
+.shortcut-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.shortcut-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-md);
+}
+
+.shortcut-desc {
+    color: var(--color-neutral-700);
+    font-size: 14px;
+}
+
+.shortcut-key {
+    font-family: 'Inter', monospace;
+    background: var(--color-neutral-200);
+    color: var(--color-neutral-700);
+    padding: 4px 10px;
+    border-radius: var(--border-radius-sm);
+    font-size: 13px;
+    font-weight: 700;
+    border: 1px solid var(--color-neutral-300);
+    white-space: nowrap;
+}
+
+[data-theme="dark"] .shortcut-key {
+    background: var(--color-neutral-700);
+    color: var(--color-neutral-100);
+    border-color: var(--color-neutral-600);
+}
+
+/* ---- F-04 微交互：点击缩放 + 星标动画 ---- */
+.theme-toggle:active,
+.accent-toggle:active,
+.lang-toggle:active,
+.random-btn:active,
+.view-btn:active,
+.download-btn:active,
+.batch-download-btn:active,
+.chart-fav-btn:active,
+.chart-download-btn:active,
+.drawer-btn:active,
+.nav-item:active,
+.my-item:active,
+.airport-item:active,
+.accent-swatch:active {
+    transform: scale(0.96);
+}
+
+@keyframes starPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+}
+
+.chart-fav-btn.active i {
+    animation: starPop 0.3s ease;
+}
+
+/* ---- F-01 玻璃态细节：更细腻边框高光 / 阴影分层 ---- */
+.glass-effect,
+.search-box input,
+.theme-toggle,
+.accent-toggle,
+.lang-toggle,
+.random-btn,
+.view-btn,
+.nav-item,
+.my-section,
+.stat-card,
+.dist-panel,
+.modal-content,
+.drawer-panel,
+.accent-panel {
+    box-shadow:
+        var(--glass-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+[data-theme="dark"] .glass-effect,
+[data-theme="dark"] .search-box input,
+[data-theme="dark"] .theme-toggle,
+[data-theme="dark"] .accent-toggle,
+[data-theme="dark"] .lang-toggle,
+[data-theme="dark"] .random-btn,
+[data-theme="dark"] .view-btn,
+[data-theme="dark"] .nav-item,
+[data-theme="dark"] .my-section,
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .dist-panel,
+[data-theme="dark"] .modal-content,
+[data-theme="dark"] .drawer-panel,
+[data-theme="dark"] .accent-panel {
+    box-shadow:
+        var(--glass-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ---- F-02 移动端：语言/发现按钮在小屏仅显图标，保证可达 ---- */
+@media (max-width: 576px) {
+    .lang-toggle,
+    .random-btn {
+        padding: 0;
+        width: 44px;
+    }
+
+    .lang-toggle span,
+    .random-btn span {
+        display: none;
+    }
+
+    .batch-download-btn {
+        font-size: 13px;
+        padding: 7px 10px;
+    }
+
+    .header-actions {
+        gap: var(--size-sm);
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 380px) {
+    .batch-download-btn .fa-download {
+        margin: 0;
+    }
+}
+
+/* ---- F-03 / D-01 reduced-motion 降级：禁用动画（静态） ---- */
+@media (prefers-reduced-motion: reduce) {
+    .aurora {
+        animation: none !important;
+    }
+
+    .fade-in {
+        animation: none !important;
+    }
+
+    .stat-card.fade-in {
+        animation: none !important;
+    }
+
+    .chart-fav-btn.active i {
+        animation: none !important;
+    }
+}
+
+[data-reduced-motion="1"] .aurora {
+    animation: none !important;
+}
+
+[data-reduced-motion="1"] .fade-in,
+[data-reduced-motion="1"] .stat-card.fade-in {
+    animation: none !important;
+}
+
+[data-reduced-motion="1"] .chart-fav-btn.active i {
+    animation: none !important;
 }

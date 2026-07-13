@@ -1,0 +1,195 @@
+%% SkyChart Pro 二期增量 · 模块/数据结构类图
+%% 以模块为类，展示关键属性(状态)与方法(函数)，并标注依赖关系
+%% 新增：I18n / Footer / Downloads / Shortcuts / Discover / Background
+%% 修改：State(lang) / Utils(buildChartUrl 重写+CHART_TYPE_META) / Charts / Dashboard / Drawer / ThemePreset(+3) / Modal(兜底) / Events / Keyboard / Main(init 顺序)
+
+classDiagram
+    direction LR
+
+    class State {
+        <<module: js/state.js>>
+        +DATA meta/airports/charts
+        +lang : 'zh'|'en'
+        +LANG_KEY = skychart_lang
+        +reducedMotion : boolean
+        +selectedAirport : string
+        +filterState : {search,country,sort}
+        +chartTypeFilter : string
+        +favorites / recentAirports / recentCharts / favoriteCharts
+        +currentView : 'dashboard'|'browse'
+        +accentPreset
+    }
+
+    class I18n {
+        <<module: js/i18n.js [新增]>>
+        +I18N : {zh,en}
+        +t(key) string
+        +applyLang()
+        +initLang()
+    }
+
+    class Footer {
+        <<module: js/footer.js [新增]>>
+        +R2_ZIP / SOURCE_SITE
+        +MAINTAINER_GITHUB / MAINTAINER_EMAIL
+        +renderFooter()
+    }
+
+    class Downloads {
+        <<module: js/downloads.js [新增]>>
+        +downloadChart(code, filename)
+        +downloadAllForAirport(code)
+        +openSourceSite(code)
+        +showBatchHint(msg)
+    }
+
+    class Shortcuts {
+        <<module: js/shortcuts.js [新增]>>
+        +openShortcutHelp()
+        +closeShortcutHelp()
+        +renderShortcutHelp()
+    }
+
+    class Discover {
+        <<module: js/discover.js [新增]>>
+        +randomChart()
+    }
+
+    class Background {
+        <<module: js/background.js [新增]>>
+        +setupBackground()
+    }
+
+    class Utils {
+        <<module: js/utils.js [修改]>>
+        +REMOTE_BASE = https://chart.wuhanqing.cn/Terminal/
+        +LOCAL_PREFIX = 航图/
+        +CHART_TYPE_META : {approach,departure,arrival,taxiway,airport,other}
+        +buildChartUrl(path) string  %% 重写：绝对URL仅编码origin后 / 本地前缀映射远程
+        +getChartType(filename)
+        +findAirportByCode(code)
+    }
+
+    class Charts {
+        <<module: js/charts.js [修改]>>
+        +loadAirportCharts(code)
+        +renderPDFFiles(files, code)  %% +类型彩标 +下载按钮
+        +openPDFViewer(code, filename) %% 8s 超时 + D-04 骨架
+        +closePDFViewer()
+        +showPDFLoading()  %% 骨架屏
+    }
+
+    class Dashboard {
+        <<module: js/dashboard.js [修改]>>
+        -_countryDistCache / _typeDistCache
+        +renderDashboard()  %% count-up + fade-in + t()
+        +handleDashboardCountryClick(country)
+        +handleDashboardTypeClick(type)
+        +switchView(view)
+        +countUp(el, target)
+    }
+
+    class Drawer {
+        <<module: js/drawer.js [修改]>>
+        +openAirportDrawer(code)
+        +closeAirportDrawer()
+        +drawerAirportCode
+    }
+
+    class ThemePreset {
+        <<module: js/theme-preset.js [修改]>>
+        +ACCENTS = [pink,ocean,forest,sunset,aurora,sakura]
+        +initAccent()
+        +setAccent(preset, persist)
+        +openPresetPanel()
+        +closePresetPanel()
+    }
+
+    class Modal {
+        <<module: js/modal.js [修改]>>
+        +setupModalLoading()
+        +showPDFFallback(url, code)  %% A-03 兜底 UI
+    }
+
+    class Events {
+        <<module: js/events.js [修改]>>
+        +setupEventListeners()  %% +语言/下载/批量/随机/页脚委托
+    }
+
+    class Keyboard {
+        <<module: js/keyboard.js [修改]>>
+        +setupKeyboardShortcuts()  %% +J/K/D/T/?
+    }
+
+    class Main {
+        <<module: js/main.js [修改]>>
+        +init()  %% 顺序: initLang→renderFooter→setupBackground→...
+    }
+
+    class Favorites {
+        <<module: js/favorites.js>>
+        +loadFavorites / saveFavorites
+        +isFavorite / toggleFavorite
+        +loadFavoriteCharts / saveFavoriteCharts
+        +isFavoriteChart / toggleFavoriteChart
+    }
+
+    class Recent {
+        <<module: js/recent.js>>
+        +loadRecentAirports / addRecentAirport
+        +loadRecentCharts / addRecentChart
+        +removeRecent* / clearRecents
+        +renderMySection()
+    }
+
+    class Controls {
+        <<module: js/controls.js [修改]>>
+        +initControls / applyFilters / getVisibleAirports / renderStats
+    }
+
+    %% 依赖关系
+    I18n ..> State : 读写 lang
+    Footer ..> I18n : t() 取词
+    Footer ..> State : 读 meta.edition
+    Downloads ..> Utils : buildChartUrl
+    Downloads ..> State : DATA.charts
+    Shortcuts ..> State : 读当前视图
+    Discover ..> Charts : openPDFViewer
+    Discover ..> State : DATA.charts
+    Background ..> State : 写 reducedMotion
+    Utils ..> State : DATA
+    Charts ..> Utils : buildChartUrl / getChartType / CHART_TYPE_META
+    Charts ..> Downloads : downloadChart(委托)
+    Charts ..> Modal : showPDFFallback
+    Charts ..> Favorites : isFavoriteChart
+    Charts ..> Recent : addRecent*
+    Dashboard ..> State : currentView/filterState/chartTypeFilter
+    Dashboard ..> Controls : applyFilters
+    Dashboard ..> Utils : CHART_TYPE_META / getChartType
+    Dashboard ..> I18n : t()
+    Drawer ..> Utils : findAirportByCode
+    Drawer ..> Downloads : downloadAllForAirport
+    Drawer ..> I18n : t()
+    ThemePreset ..> State : accentPreset
+    Modal ..> I18n : t()
+    Events ..> I18n : initLang/langToggle
+    Events ..> Footer : renderFooter
+    Events ..> Downloads : 委托下载/批量
+    Events ..> Shortcuts : open/close
+    Events ..> Discover : randomChart
+    Events ..> Dashboard : 委托点击
+    Events ..> Recent : 委托
+    Events ..> Favorites : toggleFavoriteChart
+    Events ..> Drawer : open/close
+    Events ..> ThemePreset : 色板
+    Events ..> Charts : load/open
+    Keyboard ..> Dashboard : switchView(D)
+    Keyboard ..> Shortcuts : openShortcutHelp(?)
+    Keyboard ..> Utils : findAirportByCode(导航)
+    Main ..> I18n : initLang()
+    Main ..> Footer : renderFooter()
+    Main ..> Background : setupBackground()
+    Main ..> Charts : load/open
+    Main ..> Dashboard : renderDashboard/switchView
+    Main ..> Recent : renderMySection
+    Main ..> ThemePreset : initAccent

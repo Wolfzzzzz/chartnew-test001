@@ -24,6 +24,9 @@ function loadAirportCharts(airportCode) {
     chartTypeFilter = "all";
     if (chartTypeFilterEl) chartTypeFilterEl.value = "all";
 
+    // 同步「批量下载本机场全部」按钮的 code（C-02）
+    if (batchDownloadBtn) batchDownloadBtn.dataset.code = airportCode;
+
     showPDFLoading(); // 显示加载中状态
 
     // 模拟接口请求延迟，提升用户感知体验
@@ -32,7 +35,7 @@ function loadAirportCharts(airportCode) {
         if (charts && charts.length > 0) {
             renderPDFFiles(charts, airportCode); // 有数据则渲染航图卡片
         } else {
-            showPDFEmptyState("该机场暂无航图文件"); // 无数据则显示空状态
+            showPDFEmptyState(t("empty.noAirportCharts")); // 无数据则显示空状态
         }
     }, 800);
 }
@@ -58,8 +61,8 @@ function renderPDFFiles(files, airportCode) {
         pdfContainer.innerHTML = `
             <div class="empty-state">
                 <div class="empty-icon"><i class="fas fa-filter"></i></div>
-                <h3 class="empty-text">该类型下暂无航图</h3>
-                <p>请切换其它航图类型或选择其它机场</p>
+                <h3 class="empty-text">${t("empty.noTypeCharts")}</h3>
+                <p>${t("empty.typeHint")}</p>
             </div>
         `;
         return;
@@ -68,17 +71,28 @@ function renderPDFFiles(files, airportCode) {
     filtered.forEach((file) => {
         const key = airportCode + "::" + file.filename;
         const fav = isFavoriteChart(key);
+        // 类型彩标（D-02）：色 + 图标 + 文案，文案走 t('type.*')
+        const type = getChartType(file.filename);
+        const meta = CHART_TYPE_META[type] || CHART_TYPE_META.other;
         const pdfHTML = `
             <div class="pdf-card" data-filename="${escapeHtml(file.filename)}" data-airport="${airportCode}">
                 <button class="chart-fav-btn${fav ? " active" : ""}" data-code="${airportCode}" data-filename="${escapeHtml(file.filename)}" aria-label="收藏航图" title="收藏航图">
                     <i class="${fav ? "fas" : "far"} fa-star"></i>
+                </button>
+                <button class="chart-download-btn" data-code="${airportCode}" data-filename="${escapeHtml(file.filename)}" aria-label="${t("download.single")}" title="${t("download.single")}">
+                    <i class="fas fa-download"></i>
                 </button>
                 <div class="pdf-icon">
                     <i class="fas fa-file-pdf"></i>
                 </div>
                 <div class="pdf-info">
                     <h3 class="pdf-name">${escapeHtml(file.name)}</h3>
-                    <div class="pdf-size">${escapeHtml(file.size)}</div>
+                    <div class="pdf-card-meta">
+                        <span class="chart-type-tag" style="--tag-color:${meta.color}">
+                            <i class="fas ${meta.icon}"></i> ${t("type." + type)}
+                        </span>
+                        <span class="pdf-size">${escapeHtml(file.size)}</span>
+                    </div>
                 </div>
             </div>
         `;
@@ -107,22 +121,41 @@ function openPDFViewer(airportCode, filename) {
         // 确保 file:// 与 http(s):// 下均可安全打开
         const url = buildChartUrl(chart.path);
 
+        // 记住机场代码，供 modal.js error 事件兜底定位源站 folder
+        if (typeof lastAirportCode !== "undefined") lastAirportCode = airportCode;
+
         // 重置遮罩为 spinner 并显示（避免残留上一次的错误文案）
         modalLoading.innerHTML = '<div class="spinner"></div>';
         modalLoading.style.display = "flex";
-        // 安全超时：若 load/error 始终不触发（常见于 file:// 下加载本地 PDF），
-        // 最多 8s 后强制隐藏遮罩，避免永久转圈
+        // 安全超时：若 load/error 始终不触发（常见于 file:// 下加载本地 PDF
+        // 或跨域 PDF 的 load 事件不可靠），最多 8s 后调用统一兜底 UI（A-03）。
+        // file:// 离线场景：仅隐藏遮罩，露出本地 PDF（若有），避免误报失败。
+        if (modalLoadTimer) clearTimeout(modalLoadTimer);
         modalLoadTimer = setTimeout(() => {
-            modalLoading.style.display = "none";
+            if (location.protocol === "file:") {
+                modalLoading.style.display = "none";
+            } else if (typeof showPDFFallback === "function") {
+                showPDFFallback(url, airportCode);
+            }
         }, 8000);
+
+        // iframe 失败兜底（onerror 双路，部分浏览器对 iframe 资源错误不触发 error 事件，
+        // 故以 8s modalLoadTimer 超时为主要兜底，onerror 为辅）。file:// 下不误报。
+        pdfViewer.onerror = () => {
+            if (location.protocol === "file:") return;
+            if (modalLoadTimer) { clearTimeout(modalLoadTimer); modalLoadTimer = null; }
+            if (typeof showPDFFallback === "function") showPDFFallback(url, airportCode);
+        };
+        // 成功加载（load 触发）则清超时并隐藏遮罩
+        pdfViewer.onload = () => {
+            if (modalLoadTimer) { clearTimeout(modalLoadTimer); modalLoadTimer = null; }
+            modalLoading.style.display = "none";
+        };
 
         pdfModalTitle.textContent = `${airport.name} - ${chart.name}`; // 模态框标题
         pdfViewer.src = url; // PDF 预览器内嵌加载文件（iframe 渲染）
         downloadPdf.href = url; // 下载链接指向文件
         downloadPdf.download = chart.filename; // 自定义下载文件名
-
-        // 注意：已移除「file:// 下自动新标签页打开」的旧行为，
-        // 改为统一在 iframe 内嵌预览（弹窗遮罩 8 秒内消失即露出内嵌 PDF）。
 
         pdfModal.classList.add("active"); // 显示模态框
         document.body.style.overflow = "hidden"; // 禁止页面滚动
@@ -145,12 +178,13 @@ function closePDFViewer() {
 }
 
 /**
- * 显示 PDF 加载状态（加载动画）。
+ * 显示 PDF 加载状态（加载动画 + 文案，D-04 强化反馈，避免纯白屏）。
  */
 function showPDFLoading() {
     pdfContainer.innerHTML = `
         <div class="loading-indicator">
             <div class="spinner"></div>
+            <span class="loading-text">${t("loading")}</span>
         </div>
     `;
 }
@@ -159,14 +193,15 @@ function showPDFLoading() {
  * 显示 PDF 空状态（无数据提示）。
  * @param {string} message 提示文本
  */
-function showPDFEmptyState(message = "暂无航图文件") {
+function showPDFEmptyState(message) {
+    const text = message || t("empty.noAirportCharts");
     pdfContainer.innerHTML = `
         <div class="empty-state">
             <div class="empty-icon">
                 <i class="fas fa-inbox"></i>
             </div>
-            <h3 class="empty-text">${message}</h3>
-            <p>请选择其他机场或稍后再试</p>
+            <h3 class="empty-text">${escapeHtml(text)}</h3>
+            <p>${t("empty.selectAirport")}</p>
         </div>
     `;
 }

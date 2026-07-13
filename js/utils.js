@@ -14,18 +14,58 @@ function findAirportByCode(code) {
 }
 
 /**
- * 把相对路径按 '/' 分段后用 encodeURIComponent 编码，
- * 得到可在 file:// 与 http(s):// 下安全使用的 URL。
- * 文件名里的空格、括号、#、?、& 等字符都会被正确编码，避免坏链。
- * @param {string} path 形如 "航图/RKJB-光州务安/(2-1) AD CHART.pdf"
- * @returns {string} 编码后的相对 URL
+ * 远程基址与本地前缀（A-01）。
+ * - 本地数据文件中的 path 形如 "航图/RJAA-东京成田/RJAA-1-xxx.pdf"。
+ * - http(s) 部署下把 "航图/" 前缀替换为 REMOTE_BASE 后再分段 encodeURIComponent。
+ * - file:// 协议下保持本地相对路径（离线回退）。
+ */
+const REMOTE_BASE = "https://chart.wuhanqing.cn/Terminal/";
+const LOCAL_PREFIX = "航图/";
+
+/**
+ * 构建航图可访问 URL。
+ * - 绝对 http(s) URL：仅编码 origin 之后的路径段（修复 https: 被整体 encodeURI
+ *   成 https%3A 的 bug），逐段 encodeURIComponent。
+ * - 本地 path：http(s) 部署下把 "航图/" 前缀替换为远程基址后，同样「只编码 origin
+ *   之后的路径段」（避免把 https:// 重新编码成 https%3A// 的坏链）；
+ *   file:// 协议下保持本地相对路径（离线回退）。
+ * @param {string} path 形如 "航图/RJAA-东京成田/RJAA-1-Aerodrome_Chart-1.pdf" 或绝对 URL
+ * @returns {string} 可访问 URL
  */
 function buildChartUrl(path) {
-    return path
-        .split("/")
-        .map((seg) => encodeURIComponent(seg))
-        .join("/");
+    if (!path) return "";
+    // 本地路径：file:// 下保持相对路径（离线回退），不改写前缀
+    const isFile = location.protocol === "file:";
+    let p = path;
+    if (!isFile && p.indexOf(LOCAL_PREFIX) === 0) {
+        p = REMOTE_BASE + p.slice(LOCAL_PREFIX.length);
+    }
+    // 统一处理：把 origin 与后续路径段拆开，仅对路径段逐段编码，
+    // 这样无论是绝对 URL 还是「本地前缀替换成远程基址」的结果都正确（不破坏 https://）。
+    const m = p.match(/^(https?:\/\/[^/]+)(\/.*)?$/i);
+    if (m) {
+        const origin = m[1];
+        const rest = m[2] || "";
+        if (!rest) return origin;
+        return origin + rest.split("/").map((s) => encodeURIComponent(s)).join("/");
+    }
+    // 纯相对路径（file:// 离线）：逐段编码中文 folder/page
+    return p.split("/").map((s) => encodeURIComponent(s)).join("/");
 }
+
+/**
+ * 航图类型彩色标签元数据（D-02）：类型 → 颜色 + Font Awesome 图标。
+ * 颜色统一走 CSS 变量，随明暗主题与强调色预设联动。
+ * 文本标签经 t('type.*') 渲染，本表只管「色 + 图标」。
+ */
+const CHART_TYPE_META = {
+    approach: { color: "var(--color-success)", icon: "fa-plane-arrival" },        // 绿
+    departure: { color: "var(--color-accent-blue)", icon: "fa-plane-departure" }, // 蓝
+    arrival: { color: "var(--color-accent-purple)", icon: "fa-plane-arrival" },   // 紫
+    taxiway: { color: "var(--color-accent-orange)", icon: "fa-route" },           // 橙
+    airport: { color: "var(--color-neutral-400)", icon: "fa-map-location-dot" },  // 灰
+    other: { color: "var(--color-neutral-500)", icon: "fa-file-pdf" }             // 灰（其它）
+};
 
 /**
  * 按文件名关键词识别航图类型（启发式分类，用于主区类型筛选）。

@@ -152,14 +152,14 @@ function renderMySection() {
     out.push('<div class="my-subsection">');
     out.push(
         '<div class="my-subsection-head">' +
-        '<span class="my-subsection-title"><i class="fas fa-clock-rotate-left"></i> 最近机场</span>'
+        '<span class="my-subsection-title"><i class="fas fa-clock-rotate-left"></i> ' + t("my.recentAirports") + '</span>'
     );
     if (recentAirports.length) {
-        out.push('<button class="my-clear clear-recents-btn" type="button" title="清空最近浏览">清空最近</button>');
+        out.push('<button class="my-clear clear-recents-btn" type="button" title="' + t("my.clear") + '">' + t("my.clear") + '</button>');
     }
     out.push("</div>");
     if (!recentAirports.length) {
-        out.push('<div class="my-empty">暂无最近浏览的机场</div>');
+        out.push('<div class="my-empty">' + t("my.emptyAirports") + '</div>');
     } else {
         out.push('<div class="my-list">');
         recentAirports.forEach((code) => {
@@ -181,11 +181,11 @@ function renderMySection() {
     out.push('<div class="my-subsection">');
     out.push(
         '<div class="my-subsection-head">' +
-        '<span class="my-subsection-title"><i class="fas fa-clock-rotate-left"></i> 最近航图</span>' +
+        '<span class="my-subsection-title"><i class="fas fa-clock-rotate-left"></i> ' + t("my.recentCharts") + '</span>' +
         "</div>"
     );
     if (!recentCharts.length) {
-        out.push('<div class="my-empty">暂无最近浏览的航图</div>');
+        out.push('<div class="my-empty">' + t("my.emptyCharts") + '</div>');
     } else {
         out.push('<div class="my-list">');
         recentCharts.forEach((key) => {
@@ -211,11 +211,11 @@ function renderMySection() {
     out.push('<div class="my-subsection">');
     out.push(
         '<div class="my-subsection-head">' +
-        '<span class="my-subsection-title"><i class="fas fa-star"></i> 收藏航图</span>' +
+        '<span class="my-subsection-title"><i class="fas fa-star"></i> ' + t("my.favCharts") + '</span>' +
         "</div>"
     );
     if (!favoriteCharts.length) {
-        out.push('<div class="my-empty">暂无收藏的航图</div>');
+        out.push('<div class="my-empty">' + t("my.emptyFavs") + '</div>');
     } else {
         out.push('<div class="my-list">');
         favoriteCharts.forEach((key) => {

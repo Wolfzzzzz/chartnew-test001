@@ -120,7 +120,7 @@ function setupEventListeners() {
         }
     });
 
-    // 9. 航图卡片点击（事件委托）：单图星标 或 打开 PDF 预览
+    // 9. 航图卡片点击（事件委托）：单图星标 / 单图下载 / 打开 PDF 预览
     pdfContainer.addEventListener("click", (e) => {
         // 9a. 单图收藏星标：切换收藏并仅重渲当前机场卡片 + 「我的」区
         const favBtn = e.target.closest(".chart-fav-btn");
@@ -136,7 +136,15 @@ function setupEventListeners() {
             return;
         }
 
-        // 9b. 打开 PDF 预览
+        // 9b. 单图下载（C-01）：优先 <a download>，跨域退化为新标签（委托到 downloads.js）
+        const dlBtn = e.target.closest(".chart-download-btn");
+        if (dlBtn) {
+            e.stopPropagation();
+            downloadChart(dlBtn.dataset.code, dlBtn.dataset.filename);
+            return;
+        }
+
+        // 9c. 打开 PDF 预览
         const card = e.target.closest(".pdf-card");
         if (!card) return;
         openPDFViewer(card.dataset.airport, card.dataset.filename);
@@ -293,10 +301,14 @@ function setupEventListeners() {
         });
     }
 
-    // 15. ESC 关闭（强调色色板 / 机场详情抽屉，优先于 PDF 模态）
+    // 15. ESC 关闭（快捷键面板 / 强调色色板 / 机场详情抽屉，优先于 PDF 模态）
     document.addEventListener("keydown", (e) => {
         if (e.key !== "Escape") return;
         if (pdfModal.classList.contains("active")) return; // 已由第 7 项处理
+        if (shortcutHelpModal && shortcutHelpModal.classList.contains("active")) {
+            closeShortcutHelp();
+            return;
+        }
         if (accentPanel && accentPanel.classList.contains("active")) {
             closePresetPanel();
             return;
@@ -304,6 +316,39 @@ function setupEventListeners() {
         if (airportDrawer && airportDrawer.classList.contains("active")) {
             closeAirportDrawer();
             return;
+        }
+    });
+
+    // 16. 语言切换（B-02）：🌐 按钮，zh<->en 切换并即时重渲（不刷新）
+    if (langToggle) {
+        langToggle.addEventListener("click", () => {
+            lang = (lang === "zh") ? "en" : "zh";
+            try { localStorage.setItem(LANG_KEY, lang); } catch (err) {}
+            applyLang();
+        });
+    }
+
+    // 17. 全局委托：批量下载 / 随机发现 / 快捷键面板关闭（C-02 / D-06 / D-05）
+    document.addEventListener("click", (e) => {
+        // 17a. 批量下载本机场全部（section-header 或 抽屉 内按钮）
+        const batchBtn = e.target.closest(".batch-download-btn");
+        if (batchBtn) {
+            const code = batchBtn.dataset.code;
+            if (code) downloadAllForAirport(code);
+            return;
+        }
+        // 17b. 随机发现（🎲）
+        const rnd = e.target.closest(".random-btn");
+        if (rnd) {
+            randomChart();
+            return;
+        }
+        // 17c. 快捷键帮助面板关闭（关闭按钮 或 点击遮罩）
+        if (shortcutHelpModal && shortcutHelpModal.classList.contains("active")) {
+            if (e.target.closest("#shortcutHelpClose") || e.target === shortcutHelpModal) {
+                closeShortcutHelp();
+                return;
+            }
         }
     });
 }
@@ -382,7 +427,8 @@ const setupMobileSidebar = () => {
  */
 const setupLiquidGlassEffect = () => {
     const glassElements = document.querySelectorAll(
-        ".search-box input, .theme-toggle, .mobile-toggle, .view-btn, .airport-item, .pdf-card"
+        ".search-box input, .theme-toggle, .accent-toggle, .lang-toggle, .random-btn, " +
+        ".mobile-toggle, .view-btn, .airport-item, .pdf-card, .batch-download-btn, .chart-download-btn"
     );
 
     glassElements.forEach((element) => {

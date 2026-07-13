@@ -8,6 +8,9 @@
 
 /**
  * 在 document 上绑定键盘快捷键（仅绑定一次，main.init 调用）。
+ * 支持：↑/↓ 或 J/K 导航机场、Enter 打开、/ 聚焦搜索、
+ *      D 概览仪表盘、T 切换主题、? 快捷键帮助。
+ * 输入框聚焦时除方向键/回车外不拦截（让用户输入正常）。
  */
 function setupKeyboardShortcuts() {
     document.addEventListener("keydown", (e) => {
@@ -29,12 +32,17 @@ function setupKeyboardShortcuts() {
             return;
         }
 
-        if (e.key === "ArrowDown") {
+        // 归一化 J/K 为方向键（D-05 导航增强）
+        let nav = e.key;
+        if (nav === "j" || nav === "J") nav = "ArrowDown";
+        else if (nav === "k" || nav === "K") nav = "ArrowUp";
+
+        if (nav === "ArrowDown") {
             if (items.length === 0) return;
             e.preventDefault();
             keyboardIndex = (keyboardIndex + 1) % items.length;
             updateKeyboardSelection();
-        } else if (e.key === "ArrowUp") {
+        } else if (nav === "ArrowUp") {
             if (items.length === 0) return;
             e.preventDefault();
             keyboardIndex = (keyboardIndex - 1 + items.length) % items.length;
@@ -44,6 +52,19 @@ function setupKeyboardShortcuts() {
                 e.preventDefault();
                 items[keyboardIndex].click(); // 委托给 airportList 的点击事件
             }
+        } else if (!isInput && (e.key === "d" || e.key === "D")) {
+            // D：进入概览仪表盘
+            e.preventDefault();
+            if (typeof switchView === "function") switchView("dashboard");
+        } else if (!isInput && (e.key === "t" || e.key === "T")) {
+            // T：切换主题（复用主题按钮点击）
+            e.preventDefault();
+            const tt = document.getElementById("themeToggle");
+            if (tt) tt.click();
+        } else if (!isInput && e.key === "?") {
+            // ?：打开快捷键帮助面板（D-05）
+            e.preventDefault();
+            if (typeof openShortcutHelp === "function") openShortcutHelp();
         }
     });
 }

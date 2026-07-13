@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- 动态光线背景 -->
-    <div class="light-beam"></div>
-    <div class="light-beam"></div>
-    <div class="light-beam"></div>
+    <!-- 动态极光背景（D-01，纯 CSS，随强调色联动；reduced-motion 降级为静态） -->
+    <div class="aurora aurora-1" id="auroraLayer"></div>
+    <div class="aurora aurora-2"></div>
+    <div class="aurora aurora-3"></div>
 
     <div class="container">
         <!-- 侧边栏 -->
@@ -44,14 +44,14 @@
                 </div>
                 <div class="control-row">
                     <select id="sortSelect" class="control-select" aria-label="排序方式">
-                        <option value="default">默认（按首字母分组）</option>
-                        <option value="code">按代码 A-Z</option>
-                        <option value="name">按名称 A-Z</option>
+                        <option value="default" data-i18n="control.sortDefault">默认（按首字母分组）</option>
+                        <option value="code" data-i18n="control.sortCode">按代码 A-Z</option>
+                        <option value="name" data-i18n="control.sortName">按名称 A-Z</option>
                     </select>
                 </div>
                 <div class="search-box">
                     <div class="search-icon"><i class="fas fa-search"></i></div>
-                    <input type="text" id="searchInput" placeholder="搜索机场四字代码或名称..." aria-label="搜索机场">
+                    <input type="text" id="searchInput" placeholder="搜索机场四字代码或名称..." data-i18n-ph="control.search" aria-label="搜索机场">
                 </div>
                 <div class="sidebar-stats" id="sidebarStats">机场 0 · 航图 0 · 显示 0</div>
             </div>
@@ -89,6 +89,14 @@
                     <button class="accent-toggle" id="accentToggle" aria-label="强调色">
                         <i class="fas fa-palette"></i>
                     </button>
+                    <!-- 语言切换（增量 B-02：🌐 中/EN） -->
+                    <button class="lang-toggle" id="langToggle" aria-label="切换语言">
+                        <i class="fas fa-globe"></i> <span data-i18n="lang.toggle">中 / EN</span>
+                    </button>
+                    <!-- 随机发现（增量 D-06：🎲） -->
+                    <button class="random-btn" id="randomBtn" aria-label="随机发现">
+                        <i class="fas fa-dice"></i> <span data-i18n="header.random">发现</span>
+                    </button>
                     <button class="mobile-toggle" id="mobileToggle" aria-label="打开侧边栏">
                         <i class="fas fa-bars"></i>
                     </button>
@@ -99,6 +107,9 @@
                             <button class="accent-swatch" type="button" data-accent="pink" style="background:#f43f5e" title="粉" aria-label="粉"></button>
                             <button class="accent-swatch" type="button" data-accent="ocean" style="background:#0ea5e9" title="海洋" aria-label="海洋"></button>
                             <button class="accent-swatch" type="button" data-accent="forest" style="background:#22c55e" title="森林" aria-label="森林"></button>
+                            <button class="accent-swatch" type="button" data-accent="sunset" style="background:#f97316" title="日落" aria-label="日落"></button>
+                            <button class="accent-swatch" type="button" data-accent="aurora" style="background:#8b5cf6" title="极光" aria-label="极光"></button>
+                            <button class="accent-swatch" type="button" data-accent="sakura" style="background:#ec4899" title="樱花" aria-label="樱花"></button>
                         </div>
                     </div>
                 </div>
@@ -120,7 +131,7 @@
                         </h2>
                         <div class="section-actions">
                             <select id="chartTypeFilter" class="chart-type-filter" aria-label="航图类型筛选">
-                                <option value="all">全部航图类型</option>
+                                <option value="all" data-i18n="typefilter.all">全部航图类型</option>
                                 <option value="approach">进近图</option>
                                 <option value="departure">离场图</option>
                                 <option value="arrival">进场图</option>
@@ -128,6 +139,9 @@
                                 <option value="airport">机场图</option>
                                 <option value="other">其它</option>
                             </select>
+                            <button class="batch-download-btn" id="batchDownloadBtn" type="button" data-code="" data-i18n="download.batch">
+                                <i class="fas fa-download"></i> 批量下载本机场全部
+                            </button>
                             <div class="view-toggle">
                                 <button class="view-btn active" data-view="grid" aria-label="网格视图"><i class="fas fa-th"></i></button>
                                 <button class="view-btn" data-view="list" aria-label="列表视图"><i class="fas fa-list"></i></button>
@@ -140,25 +154,8 @@
                     </div>
                 </section>
 
-                <!-- 底部声明区域 -->
-                <footer class="footer-section">
-                    <div class="footer-content">
-                        <div class="footer-contacts">
-                            <div class="contact-item">
-                                <i class="fas fa-envelope contact-icon"></i>
-                                <span>Support: <a href="mailto:support@skychartpro.top" class="contact-email">support@skychartpro.top</a></span>
-                            </div>
-                            <div class="contact-item">
-                                <i class="fas fa-headset contact-icon"></i>
-                                <span>Contact: <a href="mailto:contact@skychartpro.top" class="contact-email">contact@skychartpro.top</a></span>
-                            </div>
-                        </div>
-                        <div class="footer-disclaimer">
-                            <i class="fas fa-info-circle"></i>
-                            本站航图内容均来源于Jeppesen航图，仅供参考和学习使用。SkyChart Pro不拥有这些航图的版权，所有权利归Jeppesen所有。
-                        </div>
-                    </div>
-                </footer>
+                <!-- 底部声明区域（二期：维护者 + 数据来源两层，由 footer.js 注入） -->
+                <footer class="footer-section" id="footer"></footer>
             </div>
         </main>
     </div>
@@ -186,6 +183,9 @@
         </div>
     </div>
 
+    <!-- 快捷键帮助面板（增量 D-05：复用 .modal 模式，内容由 shortcuts.js 注入） -->
+    <div class="modal" id="shortcutHelpModal" role="dialog" aria-modal="true" aria-labelledby="shortcutHelpTitle"></div>
+
     <!-- 机场详情抽屉（增量：右侧滑入 + overlay + ESC，复用 .modal 模式） -->
     <div class="modal drawer-right" id="airportDrawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
         <div class="drawer-overlay" id="drawerOverlay"></div>
@@ -201,18 +201,21 @@
                 <div class="drawer-stats">
                     <div class="drawer-stat">
                         <span class="drawer-stat-value" id="drawerChartCount"></span>
-                        <span class="drawer-stat-label">航图数</span>
+                        <span class="drawer-stat-label" data-i18n="drawer.charts">航图数</span>
                     </div>
                     <div class="drawer-stat">
                         <span class="drawer-stat-value" id="drawerGroup"></span>
-                        <span class="drawer-stat-label">ICAO 分组</span>
+                        <span class="drawer-stat-label" data-i18n="drawer.group">ICAO 分组</span>
                     </div>
                 </div>
                 <p class="drawer-group-desc" id="drawerGroupDesc"></p>
                 <div class="drawer-actions">
-                    <button class="drawer-btn drawer-view-charts" id="drawerViewCharts" type="button">查看航图</button>
+                    <button class="drawer-btn drawer-view-charts" id="drawerViewCharts" type="button" data-i18n="drawer.view">查看航图</button>
+                    <button class="drawer-btn drawer-batch-btn" id="drawerBatchDownload" type="button" data-code="" data-i18n="download.batch">
+                        <i class="fas fa-download"></i> 批量下载本机场全部
+                    </button>
                     <button class="drawer-btn drawer-fav-btn" id="drawerFavBtn" type="button">
-                        <i class="far fa-star"></i> 收藏机场
+                        <i class="far fa-star"></i> <span data-i18n="drawer.fav">收藏机场</span>
                     </button>
                 </div>
             </div>
@@ -235,6 +238,12 @@
     <script src="js/recent.js"></script>
     <script src="js/drawer.js"></script>
     <script src="js/theme-preset.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/footer.js"></script>
+    <script src="js/downloads.js"></script>
+    <script src="js/shortcuts.js"></script>
+    <script src="js/discover.js"></script>
+    <script src="js/background.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

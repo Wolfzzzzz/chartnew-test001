@@ -44,5 +44,12 @@ let recentCharts = [];
 // 收藏航图（复合键 code::filename）
 let favoriteCharts = [];
 
-// 强调色预设：'pink' | 'ocean' | 'forest'
+// 强调色预设：'pink' | 'ocean' | 'forest' | 'sunset' | 'aurora' | 'sakura'
 let accentPreset = 'pink';
+
+// 语言：'zh' | 'en'，localStorage 持久化（键 LANG_KEY，见 i18n.js 使用）
+let lang = 'zh';
+const LANG_KEY = 'skychart_lang';
+
+// 是否降级动画（由 setupBackground 写入，prefers-reduced-motion 时为 true）
+let reducedMotion = false;

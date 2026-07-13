@@ -12,6 +12,8 @@
 function initControls() {
     populateCountryOptions();
     setupChartTypeFilter(); // 绑定 #chartTypeFilter 变更
+    // 搜索框占位文案随语言切换
+    if (searchInput) searchInput.placeholder = t("control.search");
     renderStats(); // 初始统计
 
     // 国家筛选：写入 filterState.country 后经 applyFilters 重渲染
@@ -80,7 +82,7 @@ function populateCountryOptions() {
     );
     countries.sort((a, b) => a.localeCompare(b, "en"));
 
-    let html = '<option value="all">全部国家</option>';
+    let html = `<option value="all">${t("control.countryAll")}</option>`;
     countries.forEach((c) => {
         html += `<option value="${c}">${c}</option>`;
     });
@@ -114,7 +116,10 @@ function renderStats(visibleCount) {
         visible = codes.size;
     }
 
-    sidebarStats.textContent = `机场 ${totalAirports} · 航图 ${totalCharts} · 显示 ${visible}`;
+    sidebarStats.textContent = t("stat.line")
+        .replace("{a}", String(totalAirports))
+        .replace("{c}", String(totalCharts))
+        .replace("{v}", String(visible));
 }
 
 /**

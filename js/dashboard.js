@@ -134,9 +134,11 @@ function buildTypeDonutSVG(dist) {
     });
     const legend = dist.map((d, i) => {
         const op = opacities[i % opacities.length];
+        const meta = CHART_TYPE_META[d.type] || CHART_TYPE_META.other;
         return `<div class="donut-legend-item" data-type="${d.type}">
             <span class="donut-legend-dot" style="background:var(--color-primary-500);opacity:${op}"></span>
-            <span class="donut-legend-label">${CHART_TYPE_LABEL[d.type] || d.type}</span>
+            <i class="fas ${meta.icon} donut-legend-icon" style="color:${meta.color}"></i>
+            <span class="donut-legend-label">${t("type." + d.type) || CHART_TYPE_LABEL[d.type] || d.type}</span>
             <span class="donut-legend-value">${d.count}</span>
         </div>`;
     }).join("");
@@ -147,7 +149,7 @@ function buildTypeDonutSVG(dist) {
             </svg>
             <div class="donut-center">
                 <span class="donut-total">${total}</span>
-                <span class="donut-total-label">航图总数</span>
+                <span class="donut-total-label">${t("dash.total")}</span>
             </div>
         </div>
         <div class="donut-legend">${legend}</div>`;
@@ -169,44 +171,72 @@ function renderDashboard() {
 
     dashboardView.innerHTML = `
         <div class="dashboard-header">
-            <button class="dashboard-exit-btn" type="button" data-action="exit-dashboard" aria-label="返回浏览机场">
-                <i class="fas fa-arrow-left"></i> 浏览机场
+            <button class="dashboard-exit-btn" type="button" data-action="exit-dashboard" aria-label="${t("dash.browse")}">
+                <i class="fas fa-arrow-left"></i> ${t("dash.browse")}
             </button>
-            <h2 class="dashboard-heading"><i class="fas fa-gauge-high"></i> 概览仪表盘</h2>
+            <h2 class="dashboard-heading"><i class="fas fa-gauge-high"></i> ${t("dash.title")}</h2>
         </div>
         <div class="dashboard-grid">
             <section class="stat-cards">
-                <div class="stat-card">
+                <div class="stat-card fade-in">
                     <div class="stat-icon"><i class="fas fa-plane"></i></div>
                     <div class="stat-meta">
-                        <div class="stat-value">${airportCount}</div>
-                        <div class="stat-label">机场总数</div>
+                        <div class="stat-value" data-count="${airportCount}">0</div>
+                        <div class="stat-label">${t("dash.airports")}</div>
                     </div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card fade-in">
                     <div class="stat-icon"><i class="fas fa-file-pdf"></i></div>
                     <div class="stat-meta">
-                        <div class="stat-value">${chartCount}</div>
-                        <div class="stat-label">航图总数</div>
+                        <div class="stat-value" data-count="${chartCount}">0</div>
+                        <div class="stat-label">${t("dash.charts")}</div>
                     </div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card fade-in">
                     <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
                     <div class="stat-meta">
-                        <div class="stat-value">${escapeHtml(String(edition))}</div>
-                        <div class="stat-label">版本期次</div>
+                        <div class="stat-value stat-value--text">${escapeHtml(String(edition))}</div>
+                        <div class="stat-label">${t("dash.edition")}</div>
                     </div>
                 </div>
             </section>
             <section class="dist-panel">
-                <h2 class="dist-title"><i class="fas fa-globe"></i> 国家分布 <span class="dist-hint">（点击条形筛选）</span></h2>
+                <h2 class="dist-title"><i class="fas fa-globe"></i> ${t("dash.countryDist")} <span class="dist-hint">${t("dash.countryHint")}</span></h2>
                 <div class="dist-bar">${buildCountryBarSVG(countryDist)}</div>
             </section>
             <section class="dist-panel">
-                <h2 class="dist-title"><i class="fas fa-chart-pie"></i> 航图类型分布 <span class="dist-hint">（点击扇区筛选）</span></h2>
+                <h2 class="dist-title"><i class="fas fa-chart-pie"></i> ${t("dash.typeDist")} <span class="dist-hint">${t("dash.typeHint")}</span></h2>
                 <div class="donut">${buildTypeDonutSVG(typeDist)}</div>
             </section>
         </div>`;
+
+    // D-03 数字滚动动画（reduced-motion 时直接置终值）
+    dashboardView.querySelectorAll(".stat-value[data-count]").forEach((el) => {
+        countUp(el, parseInt(el.getAttribute("data-count"), 10) || 0);
+    });
+}
+
+/**
+ * 数字滚动动画（D-03）。reduced-motion 或低版本环境时直接置终值。
+ * @param {HTMLElement} el 目标元素
+ * @param {number} target 终值
+ */
+function countUp(el, target) {
+    if (!el) return;
+    if (reducedMotion || !window.requestAnimationFrame) {
+        el.textContent = String(target);
+        return;
+    }
+    const duration = 900;
+    const start = performance.now();
+    function frame(now) {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+        el.textContent = String(Math.round(eased * target));
+        if (p < 1) requestAnimationFrame(frame);
+        else el.textContent = String(target);
+    }
+    requestAnimationFrame(frame);
 }
 
 /**

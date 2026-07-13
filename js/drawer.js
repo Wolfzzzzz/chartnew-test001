@@ -77,6 +77,9 @@ function openAirportDrawer(code) {
     }
     if (drawerViewCharts) drawerViewCharts.dataset.code = code;
 
+    // 批量下载按钮同步机场 code（C-02）
+    if (drawerBatchDownload) drawerBatchDownload.dataset.code = code;
+
     airportDrawer.classList.add("active");
     document.body.style.overflow = "hidden";
 }

@@ -7,8 +7,8 @@
 
 // localStorage 键名
 const ACCENT_KEY = "skychart_accent";
-// 可选预设
-const ACCENTS = ["pink", "ocean", "forest"];
+// 可选预设（粉 / 海洋 / 森林 / 日落 / 极光 / 樱花）
+const ACCENTS = ["pink", "ocean", "forest", "sunset", "aurora", "sakura"];
 
 /**
  * 初始化强调色：从 localStorage 读取并应用（默认 pink）。
