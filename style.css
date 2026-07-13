@@ -268,9 +268,10 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--size-xl);
-    padding-bottom: var(--size-md);
+    margin-bottom: var(--size-md);
+    padding-bottom: var(--size-sm);
     border-bottom: 1px solid var(--color-neutral-200);
+    flex-shrink: 0;
 }
 
 .sidebar.collapsed .sidebar-header,
@@ -371,7 +372,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: var(--size-md);
-    margin-bottom: var(--size-md);
+    margin-bottom: var(--size-sm);
+    flex-shrink: 0;
 }
 
 .control-row {
@@ -499,6 +501,7 @@ body {
     padding-right: var(--size-sm);
     scrollbar-width: thin;
     scrollbar-color: var(--color-primary-500) var(--color-neutral-100);
+    min-height: 250px;
 }
 
 .airport-list-container::-webkit-scrollbar {
@@ -1667,6 +1670,7 @@ iframe {
     border-radius: var(--border-radius-lg);
     box-shadow: var(--glass-shadow);
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .my-section-toggle {
@@ -1674,11 +1678,11 @@ iframe {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 14px;
+    padding: 8px 14px;
     background: transparent;
     border: none;
     color: var(--color-primary-500);
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     cursor: pointer;
     transition: background 0.2s ease;
@@ -1700,7 +1704,7 @@ iframe {
 
 .my-section-body {
     padding: 0 10px 10px;
-    max-height: 320px;
+    max-height: 140px;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--color-primary-500) var(--color-neutral-100);
@@ -1711,7 +1715,7 @@ iframe {
 }
 
 .my-subsection {
-    margin-bottom: var(--size-md);
+    margin-bottom: var(--size-sm);
 }
 
 .my-subsection:last-child {
@@ -1755,18 +1759,18 @@ iframe {
 .my-list {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
 }
 
 .my-item {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     width: 100%;
-    padding: 8px 10px;
+    padding: 6px 8px;
     background: var(--color-neutral-50);
     border: 1px solid var(--color-neutral-200);
-    border-radius: var(--border-radius-md);
+    border-radius: var(--border-radius-sm);
     cursor: pointer;
     text-align: left;
     transition: all 0.2s ease;
