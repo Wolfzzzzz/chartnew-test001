@@ -127,8 +127,8 @@ function openPDFViewer(airportCode, filename) {
         // 重置遮罩为 spinner 并显示（避免残留上一次的错误文案）
         modalLoading.innerHTML = '<div class="spinner"></div>';
         modalLoading.style.display = "flex";
-        // 安全超时：若 load/error 始终不触发（常见于 file:// 下加载本地 PDF
-        // 或跨域 PDF 的 load 事件不可靠），最多 8s 后调用统一兜底 UI（A-03）。
+        // 安全超时：跨域 PDF 的 load/error 事件在部分浏览器下不可靠，
+        // 若 iframe 始终不触发，5s 后调用统一兜底 UI（在新标签页打开 / 源站 / 全部包）。
         // file:// 离线场景：仅隐藏遮罩，露出本地 PDF（若有），避免误报失败。
         if (modalLoadTimer) clearTimeout(modalLoadTimer);
         modalLoadTimer = setTimeout(() => {
@@ -137,7 +137,7 @@ function openPDFViewer(airportCode, filename) {
             } else if (typeof showPDFFallback === "function") {
                 showPDFFallback(url, airportCode);
             }
-        }, 8000);
+        }, 5000);
 
         // iframe 失败兜底（onerror 双路，部分浏览器对 iframe 资源错误不触发 error 事件，
         // 故以 8s modalLoadTimer 超时为主要兜底，onerror 为辅）。file:// 下不误报。
@@ -154,6 +154,7 @@ function openPDFViewer(airportCode, filename) {
 
         pdfModalTitle.textContent = `${airport.name} - ${chart.name}`; // 模态框标题
         pdfViewer.src = url; // PDF 预览器内嵌加载文件（iframe 渲染）
+        openPdfTab.href = url; // 在新标签页打开（跨域 PDF 最可靠的查看方式）
         downloadPdf.href = url; // 下载链接指向文件
         downloadPdf.download = chart.filename; // 自定义下载文件名
 

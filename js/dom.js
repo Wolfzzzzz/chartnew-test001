@@ -16,6 +16,7 @@ const pdfSectionTitle = document.getElementById("pdfSectionTitle");
 const pdfModal = document.getElementById("pdfModal");
 const pdfModalTitle = document.getElementById("pdfModalTitle");
 const pdfViewer = document.getElementById("pdfViewer");
+const openPdfTab = document.getElementById("openPdfTab");
 const downloadPdf = document.getElementById("downloadPdf");
 const closeModal = document.getElementById("closeModal");
 const viewButtons = document.querySelectorAll(".view-btn");
