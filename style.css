@@ -73,7 +73,7 @@
     --shadow-glow: 0 0 15px rgba(244, 63, 94, 0.5);
     
     /* 布局变量 */
-    --sidebar-width: 372px;
+    --sidebar-width: 380px;
     --sidebar-collapsed-width: 40px;
     --content-max-width: 1400px;
     
@@ -558,7 +558,7 @@ body {
 }
 
 .airport-item {
-    padding: var(--size-md);
+    padding: var(--size-md) var(--size-lg);
     background: var(--color-neutral-100);
     border-radius: var(--border-radius-md);
     margin-bottom: var(--size-sm);
@@ -622,7 +622,7 @@ body {
 
 .main-content {
     flex: 1;
-    padding: var(--size-xl);
+    padding: var(--size-lg);
     margin-left: var(--sidebar-width);
     transition: margin-left 0.3s ease;
     max-width: calc(100vw - var(--sidebar-width));
@@ -649,7 +649,7 @@ body {
 }
 
 .page-title {
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 700;
     background: linear-gradient(90deg, var(--color-primary-500), var(--color-accent-indigo));
     -webkit-background-clip: text;
@@ -798,7 +798,7 @@ body {
 
 .pdf-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: var(--size-lg);
 }
 
@@ -1380,16 +1380,16 @@ iframe {
 /* 响应式设计 */
 @media (max-width: 1200px) {
     .sidebar {
-        width: 280px;
+        width: 300px;
     }
     
     .main-content {
-        margin-left: 280px;
-        padding: 25px;
+        margin-left: 300px;
+        padding: 20px;
     }
     
     .pdf-container {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
         gap: 16px;
     }
 }
