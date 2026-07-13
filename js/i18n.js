@@ -238,6 +238,11 @@ function applyLang() {
         const key = el.getAttribute("data-i18n");
         if (key) el.textContent = t(key);
     });
+    // 修复：uiThemeLabel 的 textContent 被 data-i18n 覆盖为固定值，
+    // 恢复为当前 UI 主题的真实名称
+    if (uiThemeLabel && typeof uiTheme !== 'undefined') {
+        uiThemeLabel.textContent = t('ui.' + uiTheme);
+    }
 
     // 回填 [data-i18n-ph] 元素的 placeholder
     document.querySelectorAll("[data-i18n-ph]").forEach((el) => {
